@@ -1,0 +1,42 @@
+{
+  "test_txns": 32854,
+  "test_fraud": 437,
+  "roc_auc": 0.9991,
+  "pr_auc": 0.9717,
+  "hold_precision": 0.952,
+  "hold_recall": 0.854,
+  "flag_recall": 0.954,
+  "legit_friction_rate": 0.0034,
+  "legit_blocked_rate": 0.0006,
+  "fraud_amount_total": 9286260,
+  "fraud_amount_intercepted": 9107053,
+  "recall_by_fraud_type": {
+    "account_takeover": 0.977,
+    "collect_scam": 0.929,
+    "digital_arrest": 0.929,
+    "mule_cashout": 0.98
+  },
+  "fairness_by_age_group": {
+    "18-35": {
+      "legit_friction_rate": 0.0028,
+      "fraud_recall": 0.927
+    },
+    "36-55": {
+      "legit_friction_rate": 0.0038,
+      "fraud_recall": 0.967
+    },
+    "56+": {
+      "legit_friction_rate": 0.0034,
+      "fraud_recall": 0.957
+    }
+  },
+  "thresholds": {
+    "step_up": 0.05,
+    "hold": 0.5,
+    "novelty": 0.6639
+  },
+  "latency_ms": {
+    "p50": 12.95,
+    "p99": 27.11
+  }
+}

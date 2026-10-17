@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#3b4a6b"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#ffffff"/>
+  <text x="600" y="38" text-anchor="middle" font-size="24" font-weight="700" fill="#0f1b3d">Kavach: in-transaction scam detection on IBM LinuxONE</text>
+
+  <!-- source -->
+  <rect x="30" y="200" width="170" height="110" rx="12" fill="#eef3ff" stroke="#4f6bd8" stroke-width="2"/>
+  <text x="115" y="238" text-anchor="middle" font-size="16" font-weight="700" fill="#0f1b3d">UPI switch /</text>
+  <text x="115" y="258" text-anchor="middle" font-size="16" font-weight="700" fill="#0f1b3d">core banking</text>
+  <text x="115" y="284" text-anchor="middle" font-size="13" fill="#4a5677">payment request</text>
+
+  <!-- LinuxONE boundary -->
+  <rect x="240" y="70" width="700" height="420" rx="16" fill="#f6f8fc" stroke="#0f62fe" stroke-width="2.5" stroke-dasharray="8 6"/>
+  <text x="260" y="98" font-size="15" font-weight="700" fill="#0f62fe">IBM LinuxONE · Secure Execution enclave · pervasive encryption</text>
+
+  <rect x="265" y="125" width="200" height="120" rx="12" fill="#fff" stroke="#8a5cf6" stroke-width="2"/>
+  <text x="365" y="155" text-anchor="middle" font-size="15" font-weight="700" fill="#0f1b3d">1 · Privacy layer</text>
+  <text x="365" y="180" text-anchor="middle" font-size="12.5" fill="#4a5677">HMAC-SHA256 tokens for</text>
+  <text x="365" y="197" text-anchor="middle" font-size="12.5" fill="#4a5677">UPI IDs + device IDs</text>
+  <text x="365" y="222" text-anchor="middle" font-size="12" fill="#8a5cf6" font-weight="600">key in Crypto Express HSM</text>
+
+  <rect x="500" y="125" width="200" height="120" rx="12" fill="#fff" stroke="#0f62fe" stroke-width="2"/>
+  <text x="600" y="155" text-anchor="middle" font-size="15" font-weight="700" fill="#0f1b3d">2 · Streaming features</text>
+  <text x="600" y="180" text-anchor="middle" font-size="12.5" fill="#4a5677">customer: usual amount, trusted</text>
+  <text x="600" y="197" text-anchor="middle" font-size="12.5" fill="#4a5677">payees/devices, bursts, 24h spend</text>
+  <text x="600" y="214" text-anchor="middle" font-size="12.5" fill="#4a5677">receiver: distinct payers (mules)</text>
+  <text x="600" y="234" text-anchor="middle" font-size="12" fill="#0f62fe" font-weight="600">same code for train + serve</text>
+
+  <rect x="735" y="125" width="185" height="120" rx="12" fill="#fff" stroke="#0f62fe" stroke-width="2"/>
+  <text x="827" y="155" text-anchor="middle" font-size="15" font-weight="700" fill="#0f1b3d">3 · AI risk model</text>
+  <text x="827" y="180" text-anchor="middle" font-size="12.5" fill="#4a5677">gradient boosting +</text>
+  <text x="827" y="197" text-anchor="middle" font-size="12.5" fill="#4a5677">isolation-forest novelty</text>
+  <text x="827" y="222" text-anchor="middle" font-size="12" fill="#0f62fe" font-weight="600">Telum on-chip AI (path)</text>
+
+  <rect x="500" y="300" width="200" height="110" rx="12" fill="#fff" stroke="#e8890c" stroke-width="2"/>
+  <text x="600" y="330" text-anchor="middle" font-size="15" font-weight="700" fill="#0f1b3d">4 · Explainer</text>
+  <text x="600" y="355" text-anchor="middle" font-size="12.5" fill="#4a5677">occlusion attribution →</text>
+  <text x="600" y="372" text-anchor="middle" font-size="12.5" fill="#4a5677">plain-language reasons</text>
+
+  <rect x="735" y="300" width="185" height="110" rx="12" fill="#fff" stroke="#d93a4a" stroke-width="2"/>
+  <text x="827" y="330" text-anchor="middle" font-size="15" font-weight="700" fill="#0f1b3d">5 · Decision</text>
+  <text x="827" y="356" text-anchor="middle" font-size="13" font-weight="700" fill="#1a9b63">ALLOW</text>
+  <text x="827" y="375" text-anchor="middle" font-size="13" font-weight="700" fill="#c77700">STEP-UP</text>
+  <text x="827" y="394" text-anchor="middle" font-size="13" font-weight="700" fill="#d93a4a">HOLD</text>
+
+  <text x="265" y="455" font-size="14" fill="#0f1b3d" font-weight="600">≈13 ms per payment end-to-end · stateless · scales across cores</text>
+
+  <!-- outputs -->
+  <rect x="980" y="140" width="190" height="110" rx="12" fill="#eafaf2" stroke="#1a9b63" stroke-width="2"/>
+  <text x="1075" y="172" text-anchor="middle" font-size="15" font-weight="700" fill="#0f1b3d">Customer app</text>
+  <text x="1075" y="196" text-anchor="middle" font-size="12.5" fill="#4a5677">scam-specific warning</text>
+  <text x="1075" y="213" text-anchor="middle" font-size="12.5" fill="#4a5677">English + Hindi</text>
+  <text x="1075" y="230" text-anchor="middle" font-size="12.5" fill="#4a5677">1930 helpline</text>
+
+  <rect x="980" y="300" width="190" height="110" rx="12" fill="#fff5e6" stroke="#e8890c" stroke-width="2"/>
+  <text x="1075" y="332" text-anchor="middle" font-size="15" font-weight="700" fill="#0f1b3d">Analyst dashboard</text>
+  <text x="1075" y="356" text-anchor="middle" font-size="12.5" fill="#4a5677">live alerts + reasons</text>
+  <text x="1075" y="373" text-anchor="middle" font-size="12.5" fill="#4a5677">masked IDs only</text>
+  <text x="1075" y="390" text-anchor="middle" font-size="12.5" fill="#4a5677">fairness + model card</text>
+
+  <!-- arrows -->
+  <path d="M200 240 L262 190" stroke="#3b4a6b" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M465 185 L497 185" stroke="#3b4a6b" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M700 185 L732 185" stroke="#3b4a6b" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M827 245 L827 297" stroke="#3b4a6b" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M790 245 L680 297" stroke="#3b4a6b" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M700 355 L732 355" stroke="#3b4a6b" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M920 340 L977 210" stroke="#3b4a6b" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M920 360 L977 360" stroke="#3b4a6b" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M827 410 C 827 520, 115 520, 115 313" stroke="#d93a4a" stroke-width="2" fill="none" stroke-dasharray="6 5" marker-end="url(#a)"/>
+  <text x="140" y="508" font-size="13" fill="#d93a4a" font-weight="600">decision returned inside the transaction, before money moves</text>
+</svg>

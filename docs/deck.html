@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kavach Pitch Deck</title>
+<style>
+@page { size: 13.333in 7.5in; margin: 0; }
+:root { --ink:#0f1b3d; --muted:#56627f; --blue:#0f62fe; --red:#d93a4a; --amber:#c77700; --green:#1a9b63; --violet:#7c4ddb; --bg:#ffffff; --soft:#f3f6fc; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #ddd; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--ink); }
+.slide { width: 13.333in; height: 7.5in; background: var(--bg); position: relative; overflow: hidden; padding: 0.6in 0.75in; page-break-after: always; break-after: page; }
+.slide::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 0.14in; background: linear-gradient(var(--blue), var(--violet)); }
+.foot { position: absolute; bottom: 0.3in; left: 0.75in; right: 0.75in; display: flex; justify-content: space-between; font-size: 11pt; color: var(--muted); }
+h1 { font-size: 40pt; margin: 0 0 0.15in; line-height: 1.05; }
+h2 { font-size: 28pt; margin: 0 0 0.3in; }
+.kicker { color: var(--blue); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: 12pt; margin-bottom: 0.12in; }
+p, li { font-size: 16pt; line-height: 1.4; }
+.muted { color: var(--muted); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3in; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25in; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.22in; }
+.card { background: var(--soft); border-radius: 14px; padding: 0.22in 0.25in; border-top: 5px solid var(--blue); }
+.card h3 { margin: 0 0 0.08in; font-size: 16pt; }
+.card p { margin: 0; font-size: 13pt; color: var(--muted); }
+.big { font-size: 40pt; font-weight: 800; line-height: 1; }
+.stat { background: var(--soft); border-radius: 14px; padding: 0.25in; }
+.stat .l { font-size: 13pt; color: var(--muted); margin-top: 0.08in; }
+table { border-collapse: collapse; width: 100%; font-size: 14pt; }
+td, th { padding: 0.09in 0.12in; border-bottom: 1px solid #dfe5f1; text-align: left; }
+th { color: var(--muted); font-weight: 600; }
+.pill { display: inline-block; font-weight: 800; padding: 3px 12px; border-radius: 99px; font-size: 13pt; }
+.allow { background: #e3f6ec; color: var(--green); } .step { background: #fff1d9; color: var(--amber); } .hold { background: #fde4e6; color: var(--red); }
+img.full { width: 100%; border-radius: 10px; border: 1px solid #dfe5f1; }
+.phone { background: #0f1b3d; color: #fff; border-radius: 22px; padding: 0.25in; font-size: 13pt; line-height: 1.45; }
+.phone .hi { color: #b9c4e4; margin-top: 0.1in; }
+.title { background: radial-gradient(circle at 85% 30%, #e6edff 0, #fff 55%); }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="slide title">
+  <div style="margin-top:1.1in">
+    <div class="kicker">IBM Z Datathon 2026 · Real-Time AI for Critical Decisions</div>
+    <h1 style="font-size:60pt">🛡️ Kavach</h1>
+    <p style="font-size:26pt;margin:0.1in 0 0.3in">Stop the UPI scam <b>before the money moves</b>.</p>
+    <p class="muted" style="font-size:17pt;max-width:9in">Real-time, explainable, privacy-preserving scam detection that runs inside the payment, on IBM LinuxONE.</p>
+  </div>
+  <div class="foot"><span>Team: ____________ · Bengaluru hub</span><span>AI for Good</span></div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <div class="kicker">The problem</div>
+  <h2>UPI made payments instant. It made scams instant too.</h2>
+  <div class="grid4">
+    <div class="card" style="border-color:var(--red)"><h3>"Digital arrest"</h3><p>Fake police / CBI keep a victim, often elderly, on a call until they transfer their savings.</p></div>
+    <div class="card" style="border-color:var(--amber)"><h3>Collect-request scam</h3><p>"Approve to receive your ₹4,999 prize." Approving actually <b>sends</b> money.</p></div>
+    <div class="card" style="border-color:var(--violet)"><h3>SIM-swap takeover</h3><p>New phone, other city: the account is drained in minutes.</p></div>
+    <div class="card"><h3>Money mules</h3><p>Rented accounts collect from many victims and pass the money on within minutes.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:0.4in">
+    <div><p><b>10+ billion</b> UPI payments a month. These scams beat people, not encryption.</p></div>
+    <div><p>Once a payment settles, recovery is slow and often impossible. <b>The only moment to stop it is during the transaction.</b></p></div>
+  </div>
+  <div class="foot"><span>Kavach</span><span>2</span></div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <div class="kicker">The solution</div>
+  <h2>Every payment gets a decision, and a reason, in ~13 ms</h2>
+  <div class="grid2">
+    <div>
+      <table>
+        <tr><td><span class="pill allow">ALLOW</span></td><td>Goes through untouched: <b>99.7%</b> of genuine payments</td></tr>
+        <tr><td><span class="pill step">STEP-UP</span></td><td>Clear warning + re-confirm. Medium risk or a never-seen pattern</td></tr>
+        <tr><td><span class="pill hold">HOLD</span></td><td>Payment paused, customer told why, can be released after verification</td></tr>
+      </table>
+      <p style="margin-top:0.3in">Every alert says <b>why</b>: <i>"on a live call while paying"</i>, <i>"receiver got money from 7 people today"</i>, <i>"device never seen on this account"</i>.</p>
+    </div>
+    <div>
+      <div class="phone">
+        <div style="font-weight:700;color:#ff8a95;margin-bottom:0.08in">⛔ Payment of ₹95,000 paused</div>
+        No police, CBI, customs or bank officer will ever ask you to transfer money on a call. Hang up and dial <b>1930</b>.
+        <div class="hi">कोई भी पुलिस, CBI, कस्टम या बैंक अधिकारी कॉल पर पैसे ट्रांसफर करने को नहीं कहता। कॉल काटें और 1930 पर संपर्क करें।</div>
+      </div>
+      <p class="muted" style="font-size:13pt;margin-top:0.12in">What the customer sees: scam-specific, in English + Hindi, at the moment it matters.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Kavach</span><span>3</span></div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <div class="kicker">Architecture</div>
+  <h2 style="margin-bottom:0.15in">AI where the transaction lives</h2>
+  <img class="full" src="architecture.png" style="border:none">
+  <div class="foot"><span>Kavach</span><span>4</span></div>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <div class="kicker">How the AI works</div>
+  <h2>Behaviour, not blacklists</h2>
+  <div class="grid3">
+    <div class="card"><h3>Streaming feature store</h3><p>14 live signals per payment: amount vs usual, trusted payees / devices / cities (trust takes 24 h), bursts, 24 h spend, on-call, COLLECT, receiver fan-in. <b>Same code trains and serves</b>, so there is no skew.</p></div>
+    <div class="card"><h3>Two models</h3><p>Gradient-boosted trees learn known scam patterns. An Isolation Forest trained only on genuine traffic flags <b>never-seen-before</b> behaviour for a STEP-UP.</p></div>
+    <div class="card"><h3>Explainer + policy</h3><p>Occlusion attribution (one batched call) ranks the signals behind each alert. Thresholds tuned for ≥90% HOLD precision and ~97% warning recall.</p></div>
+  </div>
+  <p class="muted" style="margin-top:0.35in;font-size:14pt">Data: 140k simulated UPI payments (4,000 customers, 600 merchants, 80 mules, 30 days) with 4 fraud patterns from public NPCI / RBI / I4C advisories, plus hard negatives (rent to new payees, calls, travel, new shops, old rented mule accounts). <b>Time-split</b>: train on weeks 1–2, tune on days 18–22, test on the final unseen week.</p>
+  <div class="foot"><span>Kavach</span><span>5</span></div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <div class="kicker">Live demo</div>
+  <h2 style="margin-bottom:0.15in">Analyst dashboard: live stream, alerts with reasons, try-a-scam</h2>
+  <img class="full" src="dashboard.png" style="height:5.3in;object-fit:cover;object-position:top">
+  <div class="foot"><span>Kavach</span><span>6</span></div>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <div class="kicker">Results · held-out week the model never saw</div>
+  <h2>Catches almost every scam, barely touches honest users</h2>
+  <div class="grid4">
+    <div class="stat"><div class="big" style="color:var(--green)">95.4%</div><div class="l">of scams warned or held</div></div>
+    <div class="stat"><div class="big" style="color:var(--green)">98.1%</div><div class="l">of fraud money intercepted (₹91.1 L of ₹92.9 L)</div></div>
+    <div class="stat"><div class="big">0.34%</div><div class="l">of genuine payments see any friction (0.06% held)</div></div>
+    <div class="stat"><div class="big" style="color:var(--blue)">13 ms</div><div class="l">p50 end-to-end decision (p99 27 ms)</div></div>
+  </div>
+  <div class="grid2" style="margin-top:0.35in">
+    <table>
+      <tr><th>Scam type</th><th>Caught</th></tr>
+      <tr><td>Account takeover</td><td>97.7%</td></tr>
+      <tr><td>Money-mule cash-out</td><td>98.0%</td></tr>
+      <tr><td>Digital arrest</td><td>92.9%</td></tr>
+      <tr><td>Collect-request scam</td><td>92.9%</td></tr>
+    </table>
+    <table>
+      <tr><th>Model quality</th><th></th></tr>
+      <tr><td>HOLD precision</td><td>95.2%</td></tr>
+      <tr><td>PR-AUC</td><td>0.972</td></tr>
+      <tr><td>ROC-AUC</td><td>0.999</td></tr>
+      <tr><td>Test set</td><td>32,854 txns · 437 scams</td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>Kavach · results on synthetic data; real deployment needs bank data + monitoring</span><span>7</span></div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <div class="kicker">Responsible AI · security by design</div>
+  <h2>Useful AI without exposing anyone</h2>
+  <div class="grid2">
+    <div>
+      <ul style="margin-top:0;padding-left:0.3in">
+        <li><b>Identity never exposed:</b> UPI and device IDs are HMAC-tokenized at ingestion. The model, features and logs never see them. Analysts see masks only.</li>
+        <li><b>No demographics in the model.</b> Age is used only to audit outcomes.</li>
+        <li><b>Explainable by default:</b> no alert without its reasons.</li>
+        <li><b>Human in the loop:</b> HOLD pauses the payment, it doesn't cancel it.</li>
+      </ul>
+    </div>
+    <div>
+      <table>
+        <tr><th>Age group</th><th>Genuine flagged</th><th>Scams caught</th></tr>
+        <tr><td>18–35</td><td>0.28%</td><td>92.7%</td></tr>
+        <tr><td>36–55</td><td>0.38%</td><td>96.7%</td></tr>
+        <tr><td>56+</td><td>0.34%</td><td>95.7%</td></tr>
+      </table>
+      <p class="muted" style="font-size:13pt">Older customers, the main targets, are protected as well as everyone else and are not over-blocked.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Kavach</span><span>8</span></div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <div class="kicker">Why IBM Z / LinuxONE</div>
+  <h2>Bring the AI to the data, not the data to the AI</h2>
+  <table>
+    <tr><th style="width:26%">Need</th><th style="width:38%">IBM Z capability</th><th>Kavach</th></tr>
+    <tr><td>Score inside the payment, at UPI scale</td><td>Telum on-chip AI accelerator · Snap ML / zDLC · Machine Learning for z/OS (CICS/IMS)</td><td>Runs on LinuxONE today; single-row in-transaction path; tree model → accelerator next</td></tr>
+    <tr><td>Keep identities secret</td><td>Crypto Express HSM · pervasive encryption</td><td>HMAC tokenization at ingestion; key moves into the HSM</td></tr>
+    <tr><td>Protect model + data from insiders</td><td>IBM Secure Execution · Hyper Protect containers</td><td>Stateless container, ready for an enclave</td></tr>
+    <tr><td>Future-proof crypto</td><td>Quantum-safe ML-KEM / ML-DSA</td><td>Quantum-safe TLS + key wrapping, no model change</td></tr>
+    <tr><td>Never go down</td><td>Z reliability, scale-up per LPAR</td><td>Stateless scoring, scales across cores</td></tr>
+  </table>
+  <p style="margin-top:0.25in">Banks' transactions <b>already run on IBM Z</b>. Scoring them there removes a network hop, a copy of sensitive data and a point of failure.</p>
+  <div class="foot"><span>Kavach</span><span>9</span></div>
+</section>
+
+<!-- 10 -->
+<section class="slide title">
+  <div class="kicker">Impact &amp; next steps</div>
+  <h2>From prototype to every UPI payment</h2>
+  <div class="grid3">
+    <div class="card" style="border-color:var(--green)"><h3>Who benefits</h3><p>Elderly and first-time digital users, banks &amp; PSPs (fewer losses, refunds and complaints), and law enforcement (1930 / I4C gets mule signals early).</p></div>
+    <div class="card"><h3>Next 3 months</h3><p>Model on the Telum accelerator (Snap ML / zDLC) · keys in Crypto Express · Secure Execution enclave · pilot on anonymised bank data.</p></div>
+    <div class="card" style="border-color:var(--violet)"><h3>Then</h3><p>Shared mule-account signals across banks (privacy-preserving) · more Indian languages · drift + fairness monitoring.</p></div>
+  </div>
+  <p style="margin-top:0.5in;font-size:22pt"><b>Kavach: stop the scam before the money moves.</b></p>
+  <p class="muted">github.com/hsbofficial1/kavach</p>
+  <div class="foot"><span>Thank you · IBM Z Datathon 2026</span><span>10</span></div>
+</section>
+
+</body>
+</html>
