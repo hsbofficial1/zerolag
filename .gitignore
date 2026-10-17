@@ -5,3 +5,8 @@ venv/
 data/
 artifacts/model.joblib
 .claude/
+
+# private keys / credentials - never commit
+*.pem
+*.key
+.env
