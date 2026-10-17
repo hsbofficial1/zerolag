@@ -1,274 +1,845 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ZeroLag · UPI Scam Shield</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZeroLag | Fraud Operations Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Devanagari:wght@400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0b1020;--panel:#121a2f;--panel2:#18223d;--line:#24304f;--text:#e7ecf7;--muted:#8d9abb;
-  --blue:#4f8cff;--green:#2ecc8f;--amber:#ffb547;--red:#ff5d6c;--violet:#a98bff;
+:root {
+  color-scheme: light;
+  --bg: #f4f4f4; --layer: #ffffff; --layer-2: #f4f4f4; --layer-hover: #e8e8e8;
+  --border: #e0e0e0; --border-strong: #8d8d8d;
+  --text: #161616; --text-2: #525252; --text-3: #6f6f6f; --on-accent: #ffffff;
+  --accent: #0f62fe; --accent-hover: #0353e9; --accent-soft: #edf5ff;
+  --ok: #198038; --ok-bg: #defbe6;
+  --warn-ink: #8a5a00; --warn: #f1c21b; --warn-bg: #fcf4d6;
+  --crit: #da1e28; --crit-bg: #fff1f1;
+  --chart-warn: #f1c21b; --chart-hold: #da1e28; --chart-grid: #e0e0e0;
+  --shadow: 0 2px 6px rgba(0,0,0,.08);
+  --topbar: #161616; --topbar-text: #f4f4f4; --topbar-2: #c6c6c6; --topbar-line: #393939;
 }
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-header{display:flex;align-items:center;gap:16px;padding:14px 22px;border-bottom:1px solid var(--line);background:#0d1428;position:sticky;top:0;z-index:5}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
-.logo svg{width:30px;height:30px}
-.sub{color:var(--muted);font-size:13px}
-.spacer{flex:1}
-.ctl{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
-button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;font:inherit}
-button:hover{border-color:var(--blue)}
-button.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-main{padding:18px 22px;display:grid;gap:16px}
-.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-.kpi .v{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
-.kpi .l{color:var(--muted);font-size:12px}
-.grid{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;align-items:start}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.panel h2{margin:0;padding:12px 16px;font-size:14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
-.panel h2 .hint{color:var(--muted);font-weight:400;font-size:12px;margin-left:auto}
-.alerts{max-height:640px;overflow:auto;padding:10px;display:grid;gap:10px}
-.card{background:var(--panel2);border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:10px;padding:12px}
-.card.HOLD{border-left-color:var(--red)}
-.card.ALLOW{border-left-color:var(--green)}
-.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;letter-spacing:.3px}
-.b-HOLD{background:#ff5d6c22;color:var(--red)}.b-STEP_UP{background:#ffb54722;color:var(--amber)}.b-ALLOW{background:#2ecc8f22;color:var(--green)}
-.amt{font-weight:700;font-size:16px}
-.who{color:var(--muted);font-family:ui-monospace,Consolas,monospace;font-size:12px}
-.risk{height:6px;background:#0b1020;border-radius:3px;overflow:hidden;width:120px}
-.risk>i{display:block;height:100%;background:linear-gradient(90deg,var(--amber),var(--red))}
-ul.reasons{margin:8px 0 6px;padding-left:18px}
-ul.reasons li{margin:2px 0}
-.imp{color:var(--muted);font-size:11px}
-.nudge{background:#0b1020;border:1px dashed var(--line);border-radius:8px;padding:8px 10px;font-size:13px}
-.nudge .hi{color:var(--muted);margin-top:4px}
-.truth{font-size:11px;color:var(--muted)}
-.truth.f{color:var(--violet)}
-.ticker{max-height:260px;overflow:auto;font-family:ui-monospace,Consolas,monospace;font-size:12px}
-.ticker div{display:grid;grid-template-columns:70px 1fr 90px 70px 60px;gap:8px;padding:4px 14px;border-bottom:1px solid #1b2542}
-.ticker .d-HOLD{color:var(--red)}.ticker .d-STEP_UP{color:var(--amber)}.ticker .d-ALLOW{color:var(--green)}
-.try{padding:14px 16px;display:grid;gap:10px}
-select,input{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:inherit;width:100%}
-.scen{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.scen button{text-align:left;padding:10px}
-.scen b{display:block}
-.scen span{color:var(--muted);font-size:12px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-td,th{padding:6px 16px;border-bottom:1px solid #1b2542;text-align:left}
-th{color:var(--muted);font-weight:500}
-td.n{text-align:right;font-variant-numeric:tabular-nums}
-.model{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-.note{padding:12px 16px;color:var(--muted);font-size:13px}
-.note b{color:var(--text)}
-.empty{color:var(--muted);padding:20px;text-align:center}
-@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.grid,.model{grid-template-columns:1fr}}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #161616; --layer: #262626; --layer-2: #393939; --layer-hover: #333333;
+    --border: #393939; --border-strong: #6f6f6f;
+    --text: #f4f4f4; --text-2: #c6c6c6; --text-3: #a8a8a8; --on-accent: #ffffff;
+    --accent: #4589ff; --accent-hover: #78a9ff; --accent-soft: #001d6c;
+    --ok: #42be65; --ok-bg: #044317;
+    --warn-ink: #f1c21b; --warn: #f1c21b; --warn-bg: #3d3100;
+    --crit: #ff8389; --crit-bg: #520408;
+    --chart-warn: #f1c21b; --chart-hold: #fa4d56; --chart-grid: #393939;
+    --shadow: 0 2px 6px rgba(0,0,0,.4);
+    --topbar: #0b0b0b; --topbar-line: #262626;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font: 14px/1.5 "IBM Plex Sans", "IBM Plex Sans Devanagari", "Segoe UI", system-ui, sans-serif; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: "IBM Plex Mono", ui-monospace, Consolas, monospace; font-size: 12.5px; }
+.num { font-variant-numeric: tabular-nums; }
+.muted { color: var(--text-2); }
+.small { font-size: 12px; color: var(--text-3); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- top bar ---------- */
+.topbar { position: sticky; top: 0; z-index: 20; height: 48px; display: flex; align-items: center; gap: 16px;
+  padding: 0 16px; background: var(--topbar); color: var(--topbar-text); border-bottom: 1px solid var(--topbar-line); }
+.brand { display: flex; align-items: baseline; gap: 10px; white-space: nowrap; }
+.brand b { font-size: 15px; font-weight: 600; letter-spacing: .01em; }
+.brand span { color: var(--topbar-2); font-size: 13px; }
+.topbar .spacer { flex: 1; }
+.env { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border: 1px solid var(--topbar-line);
+  border-radius: 12px; font-size: 12px; color: var(--topbar-2); white-space: nowrap; }
+.env b { color: var(--topbar-text); font-weight: 500; }
+.live { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--topbar-2); white-space: nowrap; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #42be65; box-shadow: 0 0 0 3px rgba(66,190,101,.25); }
+.live.paused .dot { background: #8d8d8d; box-shadow: none; }
+.topbar select, .topbar button { background: transparent; border: 1px solid var(--topbar-line); color: var(--topbar-text);
+  height: 32px; padding: 0 10px; border-radius: 0; cursor: pointer; }
+.topbar select option { color: #161616; }
+.topbar button:hover, .topbar select:hover { background: #262626; }
+
+/* ---------- shell ---------- */
+.shell { display: grid; grid-template-columns: 232px 1fr; min-height: calc(100vh - 48px); }
+.sidenav { background: var(--layer); border-right: 1px solid var(--border); padding: 16px 0; position: sticky; top: 48px;
+  height: calc(100vh - 48px); overflow: auto; }
+.sidenav .label { padding: 0 16px 8px; font-size: 12px; color: var(--text-3); }
+.tab { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 10px 16px; border: 0;
+  border-left: 3px solid transparent; background: none; text-align: left; cursor: pointer; color: var(--text-2); }
+.tab:hover { background: var(--layer-hover); color: var(--text); }
+.tab[aria-selected="true"] { border-left-color: var(--accent); background: var(--layer-2); color: var(--text); font-weight: 500; }
+.count { min-width: 22px; padding: 0 7px; border-radius: 10px; background: var(--crit); color: #fff; font-size: 11.5px; text-align: center; }
+.count:empty { display: none; }
+.sidenav .foot { margin: 24px 16px 0; padding-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-3); }
+
+main { padding: 24px 32px 48px; min-width: 0; }
+.page-head { margin-bottom: 20px; max-width: 900px; }
+h1 { font-size: 24px; font-weight: 400; margin: 0 0 6px; }
+h2 { font-size: 15px; font-weight: 600; margin: 0; }
+h3 { font-size: 13px; font-weight: 600; margin: 0 0 8px; }
+.page-head p { margin: 0; color: var(--text-2); font-size: 14px; }
+[role="tabpanel"][hidden] { display: none; }
+
+/* ---------- cards ---------- */
+.card { background: var(--layer); border: 1px solid var(--border); }
+.card-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.card-head p { margin: 2px 0 0; font-size: 12.5px; color: var(--text-3); }
+.card-head .end { margin-left: auto; }
+.card-body { padding: 16px; }
+.grid { display: grid; gap: 16px; }
+.g-kpi { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-bottom: 16px; }
+.g-2 { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); margin-bottom: 16px; }
+.g-2e { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g-test { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+
+.kpi { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.kpi .k { font-size: 12.5px; color: var(--text-2); }
+.kpi .v { font-size: 28px; font-weight: 400; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.kpi .v small { font-size: 14px; color: var(--text-3); margin-left: 4px; }
+.kpi .h { font-size: 12px; color: var(--text-3); line-height: 1.4; }
+.kpi.good .v { color: var(--ok); }
+
+/* ---------- decision badges ---------- */
+.badge { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 10px; border-radius: 11px;
+  font-size: 12px; font-weight: 500; white-space: nowrap; }
+.badge svg { width: 12px; height: 12px; flex: none; }
+.b-ALLOW { background: var(--ok-bg); color: var(--ok); }
+.b-STEP_UP { background: var(--warn-bg); color: var(--warn-ink); }
+.b-HOLD { background: var(--crit-bg); color: var(--crit); }
+.tag { display: inline-block; padding: 0 8px; border-radius: 10px; background: var(--layer-2); color: var(--text-2); font-size: 12px; white-space: nowrap; }
+.tag.fraud { background: var(--crit-bg); color: var(--crit); }
+
+/* decision explainer */
+.dlist { display: grid; gap: 0; }
+.drow { display: grid; grid-template-columns: 96px 1fr auto; gap: 12px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.drow:last-child { border-bottom: 0; }
+.drow p { margin: 0; font-size: 13px; color: var(--text-2); }
+.drow .n { text-align: right; font-variant-numeric: tabular-nums; }
+.drow .n b { display: block; font-weight: 500; font-size: 15px; color: var(--text); }
+
+/* ---------- chart ---------- */
+.chart-wrap { position: relative; }
+.chart-wrap svg { display: block; width: 100%; height: 220px; }
+.legend { display: flex; gap: 16px; font-size: 12.5px; color: var(--text-2); margin-bottom: 8px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.tip { position: absolute; pointer-events: none; background: var(--text); color: var(--bg); padding: 6px 10px; font-size: 12px;
+  line-height: 1.5; white-space: nowrap; transform: translate(-50%, -100%); margin-top: -8px; display: none; z-index: 2; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow: auto; container-type: inline-size; }
+table { width: 100%; border-collapse: separate; border-spacing: 0; }
+thead th { position: sticky; top: 0; z-index: 1; background: var(--layer-2); text-align: left; font-weight: 600; font-size: 12.5px;
+  color: var(--text); padding: 10px 12px; border-bottom: 1px solid var(--border-strong); white-space: nowrap; }
+tbody td, tbody th { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; font-weight: 400; }
+tbody tr.click { cursor: pointer; }
+tbody tr.click:hover { background: var(--layer-hover); }
+tbody tr.click:focus-visible { outline-offset: -2px; }
+td.r, th.r { text-align: right; }
+.reason-cell { min-width: 220px; max-width: 360px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-2); }
+.riskbar { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+td.mono { white-space: nowrap; }
+.riskbar .trk { display: inline-block; width: 56px; height: 6px; background: var(--layer-2); position: relative; }
+.riskbar .trk i { position: absolute; inset: 0 auto 0 0; background: var(--text-2); }
+.riskbar.h .trk i { background: var(--crit); }
+.riskbar.w .trk i { background: var(--warn); }
+.empty { padding: 32px 16px; text-align: center; color: var(--text-3); }
+@container (width < 640px) {
+  .stack table, .stack thead, .stack tbody, .stack tr, .stack td, .stack th { display: block; }
+  .stack thead { display: none; }
+  .stack tbody tr { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .stack tbody td { border: 0; padding: 2px 0; }
+  .stack tbody td[data-l]::before { content: attr(data-l) ": " / attr(data-l); color: var(--text-3); font-size: 12px; }
+  .stack .reason-cell { max-width: none; min-width: 0; white-space: normal; }
+  .stack td.mono { white-space: normal; }
+  .stack td.r { text-align: left; }
+}
+
+/* ---------- toolbar / controls ---------- */
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.seg { display: inline-flex; border: 1px solid var(--border-strong); }
+.seg button { border: 0; background: var(--layer); padding: 6px 14px; cursor: pointer; color: var(--text-2); }
+.seg button + button { border-left: 1px solid var(--border-strong); }
+.seg button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
+input[type="search"], input[type="number"], select.field { height: 36px; padding: 0 12px; border: 0; border-bottom: 1px solid var(--border-strong);
+  background: var(--layer-2); color: var(--text); min-width: 0; }
+input[type="search"] { width: 260px; }
+.check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-2); }
+.check input { width: 16px; height: 16px; accent-color: var(--accent); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 16px; border: 1px solid transparent;
+  background: var(--accent); color: var(--on-accent); cursor: pointer; font-weight: 500; }
+.btn:hover { background: var(--accent-hover); }
+.btn.ghost { background: transparent; color: var(--accent); border-color: transparent; }
+.btn.ghost:hover { background: var(--accent-soft); }
+.btn.secondary { background: var(--layer); color: var(--text); border-color: var(--border-strong); }
+.btn.secondary:hover { background: var(--layer-hover); }
+.banner { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: var(--accent-soft); border-bottom: 1px solid var(--border); font-size: 13px; }
+.banner[hidden] { display: none; }
+
+/* ---------- forms ---------- */
+.form { display: grid; gap: 16px; }
+.field-row { display: grid; gap: 6px; }
+.field-row label, .field-row .lbl { font-size: 12.5px; color: var(--text-2); }
+.field-row .help { font-size: 12px; color: var(--text-3); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 16px; }
+legend { font-size: 13px; font-weight: 600; margin-bottom: 4px; padding: 0; }
+.profile { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; padding: 12px; background: var(--layer-2); }
+.profile div { font-size: 12px; color: var(--text-3); }
+.profile b { display: block; font-size: 13.5px; font-weight: 500; color: var(--text); overflow-wrap: anywhere; }
+.presets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.preset { text-align: left; padding: 10px 12px; border: 1px solid var(--border); background: var(--layer); cursor: pointer; }
+.preset:hover { border-color: var(--accent); }
+.preset b { display: block; font-weight: 500; font-size: 13px; }
+.preset span { font-size: 12px; color: var(--text-3); }
+hr.sep { border: 0; border-top: 1px solid var(--border); margin: 4px 0; }
+
+/* ---------- verdict / detail ---------- */
+.verdict { padding: 16px; border-left: 4px solid var(--border-strong); background: var(--layer-2); }
+.verdict.ALLOW { border-left-color: var(--ok); }
+.verdict.STEP_UP { border-left-color: var(--warn); }
+.verdict.HOLD { border-left-color: var(--crit); }
+.verdict .t { font-size: 18px; margin: 8px 0 4px; }
+.verdict p { margin: 0; color: var(--text-2); }
+.scale { margin-top: 4px; }
+.scale .bar { position: relative; height: 10px; background: linear-gradient(90deg, var(--ok-bg) 0 var(--w1), var(--warn-bg) var(--w1) var(--w2), var(--crit-bg) var(--w2) 100%); border: 1px solid var(--border); }
+.scale .mark { position: absolute; top: -5px; width: 2px; height: 18px; background: var(--text); }
+.scale .ticks { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-3); margin-top: 6px; }
+.reasons { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.reasons li { display: grid; grid-template-columns: 1fr 120px; gap: 12px; align-items: center; font-size: 13.5px; }
+.imp { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-3); }
+.imp span { flex: 1; height: 6px; background: var(--layer-2); position: relative; }
+.imp span i { position: absolute; inset: 0 auto 0 0; background: var(--text-2); }
+.msg { border: 1px solid var(--border); padding: 12px 14px; background: var(--layer); }
+.msg p { margin: 0; }
+.msg .hi { margin-top: 6px; color: var(--text-2); font-family: "IBM Plex Sans Devanagari", "IBM Plex Sans", sans-serif; }
+dl.kv { display: grid; grid-template-columns: 160px 1fr; gap: 8px 16px; margin: 0; font-size: 13px; }
+dl.kv dt { color: var(--text-3); }
+dl.kv dd { margin: 0; overflow-wrap: anywhere; }
+.section { display: grid; gap: 10px; }
+.stack-lg { display: grid; gap: 20px; }
+
+dialog { width: min(760px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0; border: 1px solid var(--border);
+  background: var(--layer); color: var(--text); box-shadow: 0 8px 32px rgba(0,0,0,.25); }
+dialog::backdrop { background: rgba(22,22,22,.5); }
+.dlg-head { display: flex; align-items: flex-start; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--layer); }
+.dlg-head .x { margin-left: auto; width: 40px; height: 40px; border: 0; background: transparent; cursor: pointer; font-size: 20px; color: var(--text-2); }
+.dlg-head .x:hover { background: var(--layer-hover); }
+.dlg-body { padding: 20px; display: grid; gap: 22px; }
+
+/* bars (model page) */
+.hbar { display: grid; grid-template-columns: 170px 1fr 56px; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.hbar:last-child { border-bottom: 0; }
+.hbar .track { height: 10px; background: var(--layer-2); position: relative; }
+.hbar .track i { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 0 2px 2px 0; }
+.hbar .v { text-align: right; font-variant-numeric: tabular-nums; }
+ul.plain { margin: 0; padding-left: 18px; display: grid; gap: 8px; color: var(--text-2); }
+ul.plain b { color: var(--text); font-weight: 500; }
+ol.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: s; }
+ol.steps li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 16px; border-bottom: 1px solid var(--border); counter-increment: s; }
+ol.steps li:last-child { border-bottom: 0; }
+ol.steps li::before { content: counter(s, decimal-leading-zero); font-family: "IBM Plex Mono", monospace; color: var(--accent); font-size: 13px; padding-top: 1px; }
+ol.steps p { margin: 4px 0 0; color: var(--text-2); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1280px) { .g-kpi { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 1100px) { .g-2, .g-test, .g-2e { grid-template-columns: 1fr; } }
+@media (max-width: 860px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidenav { position: sticky; top: 48px; z-index: 10; height: auto; padding: 0; display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--border); }
+  .sidenav .label, .sidenav .foot { display: none; }
+  #tabs { display: flex; }
+  .topbar { gap: 8px; padding: 0 12px; }
+  .topbar button, .topbar select { white-space: nowrap; padding: 0 8px; }
+  .tab { width: auto; white-space: nowrap; border-left: 0; border-bottom: 3px solid transparent; gap: 8px; }
+  .tab[aria-selected="true"] { border-bottom-color: var(--accent); }
+  main { padding: 20px 16px 40px; }
+  .brand span, .env { display: none; }
+  .g-kpi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile { grid-template-columns: 1fr 1fr; }
+  .two, .presets { grid-template-columns: 1fr; }
+  input[type="search"] { width: 100%; }
+  dl.kv { grid-template-columns: 1fr; gap: 2px 0; }
+  dl.kv dd { margin-bottom: 8px; }
+  .reasons li { grid-template-columns: 1fr; }
+  .hbar { grid-template-columns: 120px 1fr 48px; }
+}
+@media (max-width: 480px) { .live .txt { display: none; } .g-kpi { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<header>
-  <div class="logo">
-    <svg viewBox="0 0 32 32" fill="none"><path d="M16 2l11 4v9c0 7-4.7 12.3-11 15C9.7 27.3 5 22 5 15V6l11-4z" fill="#4f8cff22" stroke="#4f8cff" stroke-width="2"/><path d="M11 16l3.5 3.5L21 13" stroke="#2ecc8f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    ZeroLag
-  </div>
-  <div class="sub">Real-time, privacy-preserving UPI scam shield · in-transaction AI on IBM LinuxONE</div>
+<header class="topbar">
+  <div class="brand"><b>ZeroLag</b><span>Fraud Operations Console</span></div>
+  <span class="env" id="env" title="">Platform: <b id="envText">connecting…</b></span>
   <div class="spacer"></div>
-  <div class="ctl">
-    <span id="tpsLabel">25 txn/s</span>
-    <input id="tps" type="range" min="2" max="80" value="25" style="width:110px">
-    <button id="toggle">Pause stream</button>
-  </div>
+  <span class="live" id="live" role="status"><span class="dot" aria-hidden="true"></span><span class="txt" id="liveText">Connecting…</span></span>
+  <label class="sr-only" for="speed">Simulated traffic speed</label>
+  <select id="speed" aria-label="Simulated traffic speed">
+    <option value="5">Slow · 5/s</option>
+    <option value="25" selected>Normal · 25/s</option>
+    <option value="60">Fast · 60/s</option>
+  </select>
+  <button id="pause" type="button">Pause stream</button>
 </header>
 
-<main>
-  <section class="kpis">
-    <div class="kpi"><div class="v" id="k-scored">0</div><div class="l">Transactions scored live</div></div>
-    <div class="kpi"><div class="v" id="k-hold" style="color:var(--red)">0</div><div class="l">Held (payment paused)</div></div>
-    <div class="kpi"><div class="v" id="k-step" style="color:var(--amber)">0</div><div class="l">Step-up warnings</div></div>
-    <div class="kpi"><div class="v" id="k-caught">0 / 0</div><div class="l">Scams intercepted / seen</div></div>
-    <div class="kpi"><div class="v" id="k-saved" style="color:var(--green)">₹0</div><div class="l">Money protected</div></div>
-    <div class="kpi"><div class="v" id="k-lat">0 ms</div><div class="l">Avg decision latency</div></div>
-  </section>
-
-  <section class="grid">
-    <div class="panel">
-      <h2>Live alerts <span class="hint">every flagged payment, with its reasons</span></h2>
-      <div class="alerts" id="alerts"><div class="empty">Waiting for suspicious payments…</div></div>
+<div class="shell">
+  <nav class="sidenav" aria-label="Console sections">
+    <div class="label">Monitoring</div>
+    <div role="tablist" aria-orientation="vertical" id="tabs">
+      <button class="tab" role="tab" id="t-overview" aria-controls="p-overview" aria-selected="true">Overview</button>
+      <button class="tab" role="tab" id="t-alerts" aria-controls="p-alerts" aria-selected="false" tabindex="-1">Alert queue <span class="count" id="alertCount"></span></button>
+      <button class="tab" role="tab" id="t-test" aria-controls="p-test" aria-selected="false" tabindex="-1">Test a payment</button>
+      <button class="tab" role="tab" id="t-model" aria-controls="p-model" aria-selected="false" tabindex="-1">Model &amp; governance</button>
+      <button class="tab" role="tab" id="t-help" aria-controls="p-help" aria-selected="false" tabindex="-1">How it works</button>
     </div>
+    <div class="foot">Traffic shown is a replay of a simulated, unseen week of UPI payments. Identifiers are tokenised and masked.</div>
+  </nav>
 
-    <div style="display:grid;gap:16px">
-      <div class="panel">
-        <h2>Try a scam yourself <span class="hint">scores through POST /api/score</span></h2>
-        <div class="try">
-          <label class="sub">Customer (real history in the bank's feature store)</label>
-          <select id="cust"></select>
-          <div class="scen">
-            <button data-s="normal"><b>Normal payment</b><span>Usual amount to a regular shop</span></button>
-            <button data-s="arrest"><b>"Digital arrest" call</b><span>On a call, big transfer to a new account</span></button>
-            <button data-s="collect"><b>Prize COLLECT request</b><span>"Approve to receive ₹4,999"</span></button>
-            <button data-s="ato"><b>SIM-swap takeover</b><span>New phone, other city, rapid transfers</span></button>
+  <main>
+    <!-- ============ OVERVIEW ============ -->
+    <section role="tabpanel" id="p-overview" aria-labelledby="t-overview">
+      <div class="page-head">
+        <h1>Overview</h1>
+        <p>ZeroLag checks every UPI payment before the money moves. Each payment is <b>Allowed</b>, <b>Warned</b> (the customer confirms after a warning) or <b>Held</b> (paused for verification) within a few milliseconds.</p>
+      </div>
+
+      <div class="grid g-kpi">
+        <div class="card kpi"><span class="k">Payments checked</span><span class="v num" id="kScored">0</span><span class="h">Since this console started</span></div>
+        <div class="card kpi good"><span class="k">Scams stopped</span><span class="v num" id="kCaught">0<small>/ 0</small></span><span class="h" id="kCaughtH">Warned or held before money moved</span></div>
+        <div class="card kpi"><span class="k">Money protected</span><span class="v num" id="kSaved">₹0</span><span class="h">Value of scam payments stopped</span></div>
+        <div class="card kpi"><span class="k">Genuine payments interrupted</span><span class="v num" id="kFriction">0%</span><span class="h" id="kFrictionH">Share of honest payments that saw a warning or hold</span></div>
+        <div class="card kpi"><span class="k">Average decision time</span><span class="v num" id="kLat">0 ms</span><span class="h" id="kLatH">Score, explain and decide, per payment</span></div>
+      </div>
+
+      <div class="grid g-2">
+        <div class="card">
+          <div class="card-head"><div><h2>Flagged payments, last 3 minutes</h2><p>Number of payments warned or held in each 10-second interval</p></div></div>
+          <div class="card-body">
+            <div class="legend" aria-hidden="true"><span><i style="background:var(--chart-hold)"></i>Held</span><span><i style="background:var(--chart-warn)"></i>Warned</span></div>
+            <div class="chart-wrap" id="chartWrap">
+              <svg id="chart" role="img" aria-label="Stacked bar chart of held and warned payments per 10 seconds"></svg>
+              <div class="tip" id="tip"></div>
+            </div>
           </div>
-          <div id="tryResult"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h2>What each decision means</h2><p>Counts since this console started</p></div></div>
+          <div class="card-body dlist">
+            <div class="drow"><span class="badge b-ALLOW" data-icon="ALLOW">Allowed</span><p>Payment goes through. The customer notices nothing.</p><span class="n"><b id="nAllow">0</b><span class="small" id="pAllow">0%</span></span></div>
+            <div class="drow"><span class="badge b-STEP_UP" data-icon="STEP_UP">Warned</span><p>Customer sees a scam-specific warning and must confirm again.</p><span class="n"><b id="nWarn">0</b><span class="small" id="pWarn">0%</span></span></div>
+            <div class="drow"><span class="badge b-HOLD" data-icon="HOLD">Held</span><p>Payment is paused. The customer is told why and can verify with the bank.</p><span class="n"><b id="nHold">0</b><span class="small" id="pHold">0%</span></span></div>
+          </div>
         </div>
       </div>
 
-      <div class="panel">
-        <h2>Live transaction stream <span class="hint">IDs tokenized + masked</span></h2>
-        <div class="ticker" id="ticker"></div>
+      <div class="card">
+        <div class="card-head"><div><h2>Latest alerts</h2><p>Select a row to see why the payment was flagged</p></div>
+          <button class="btn ghost end" type="button" id="toQueue">Open alert queue</button></div>
+        <div class="table-wrap stack"><table>
+          <thead><tr><th>Time</th><th>Decision</th><th class="r">Amount</th><th>From → To</th><th>Main reason</th></tr></thead>
+          <tbody id="latest"><tr><td colspan="5" class="empty">Waiting for the first flagged payment…</td></tr></tbody>
+        </table></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="model">
-    <div class="panel">
-      <h2>Model card · held-out week</h2>
-      <table id="mc"></table>
-    </div>
-    <div class="panel">
-      <h2>Responsible AI · fairness by age group</h2>
-      <table id="fair"></table>
-      <div class="note">Age is <b>never</b> a model input. It is used only in this audit, to check that older customers are neither over-blocked nor under-protected.</div>
-    </div>
-    <div class="panel">
-      <h2>Detection by scam type</h2>
-      <table id="types"></table>
-      <div class="note"><b>Privacy by design:</b> UPI IDs and device IDs are HMAC-tokenized at ingestion. The model and feature store never see raw identifiers. On IBM Z the key sits in the Crypto Express HSM.</div>
-    </div>
-  </section>
-</main>
+    <!-- ============ ALERT QUEUE ============ -->
+    <section role="tabpanel" id="p-alerts" aria-labelledby="t-alerts" hidden>
+      <div class="page-head">
+        <h1>Alert queue</h1>
+        <p>Every payment ZeroLag warned or held, newest first. Select an alert to see the risk score, the reasons behind it and the message the customer received.</p>
+      </div>
+      <div class="card">
+        <search class="toolbar">
+          <div class="seg" role="group" aria-label="Filter by decision">
+            <button type="button" data-f="all" aria-pressed="true">All flagged <span class="num" id="fAll"></span></button>
+            <button type="button" data-f="HOLD" aria-pressed="false">Held <span class="num" id="fHold"></span></button>
+            <button type="button" data-f="STEP_UP" aria-pressed="false">Warned <span class="num" id="fWarn"></span></button>
+          </div>
+          <label class="sr-only" for="q">Search alerts</label>
+          <input type="search" id="q" placeholder="Search by account, city or reason">
+          <label class="check"><input type="checkbox" id="autoUpd" checked> Update list automatically</label>
+        </search>
+        <div class="banner" id="newBanner" hidden><span id="newText"></span><button class="btn ghost" type="button" id="showNew">Show new alerts</button></div>
+        <div class="table-wrap stack" style="max-height: calc(100vh - 290px)"><table>
+          <thead><tr><th>Payment time</th><th>Decision</th><th class="r">Amount</th><th>From → To</th><th>Risk</th><th>Main reason</th><th>Simulation label</th></tr></thead>
+          <tbody id="queue"><tr><td colspan="7" class="empty">No alerts yet.</td></tr></tbody>
+        </table></div>
+      </div>
+      <p class="small" style="margin-top:10px">Simulation label shows the true outcome from the synthetic dataset. It is never visible to the model and is shown only to evaluate decisions.</p>
+    </section>
+
+    <!-- ============ TEST A PAYMENT ============ -->
+    <section role="tabpanel" id="p-test" aria-labelledby="t-test" hidden>
+      <div class="page-head">
+        <h1>Test a payment</h1>
+        <p>Send a payment through the same scoring path the bank would call. Start from a common scam or fill in the details yourself.</p>
+      </div>
+      <div class="grid g-test">
+        <div class="card">
+          <div class="card-head"><div><h2>Payment details</h2><p>Customers below have real (synthetic) payment history</p></div></div>
+          <form class="card-body form" id="testForm">
+            <div class="field-row">
+              <label for="cust">Customer</label>
+              <select class="field" id="cust"></select>
+              <div class="profile" id="profile"></div>
+            </div>
+            <div class="field-row">
+              <span class="lbl">Start from a scenario</span>
+              <div class="presets">
+                <button type="button" class="preset" data-p="normal"><b>Everyday payment</b><span>Usual amount to a regular payee</span></button>
+                <button type="button" class="preset" data-p="arrest"><b>“Digital arrest” call</b><span>On a call, large transfer to a new account</span></button>
+                <button type="button" class="preset" data-p="collect"><b>Prize collect request</b><span>“Approve to receive ₹4,999”</span></button>
+                <button type="button" class="preset" data-p="ato"><b>SIM-swap takeover</b><span>New phone, other city, rapid transfers</span></button>
+              </div>
+            </div>
+            <hr class="sep">
+            <fieldset>
+              <legend>Details</legend>
+              <div class="two">
+                <div class="field-row">
+                  <label for="ptype">Payment type</label>
+                  <select class="field" id="ptype">
+                    <option value="P2P">Send money to a person</option>
+                    <option value="P2M">Pay a merchant</option>
+                    <option value="COLLECT">Approve a collect request</option>
+                  </select>
+                </div>
+                <div class="field-row">
+                  <label for="amount">Amount (₹)</label>
+                  <input type="number" id="amount" min="1" max="100000" step="1" required>
+                  <span class="help">UPI limit is ₹1,00,000 per payment</span>
+                </div>
+              </div>
+              <div class="two">
+                <div class="field-row">
+                  <label for="recv">Receiver</label>
+                  <select class="field" id="recv">
+                    <option value="regular">Customer’s regular payee</option>
+                    <option value="new">A new receiver</option>
+                  </select>
+                </div>
+                <div class="field-row">
+                  <label for="recvAge">Receiver account age (days)</label>
+                  <input type="number" id="recvAge" min="0" max="5000" step="1" value="900">
+                </div>
+              </div>
+              <div class="two">
+                <div class="field-row">
+                  <label for="device">Device</label>
+                  <select class="field" id="device">
+                    <option value="usual">Customer’s usual phone</option>
+                    <option value="new">A new, unrecognised phone</option>
+                  </select>
+                </div>
+                <div class="field-row">
+                  <label for="city">Location</label>
+                  <select class="field" id="city"></select>
+                </div>
+              </div>
+              <label class="check"><input type="checkbox" id="onCall"> Customer is on a phone call while paying</label>
+              <label class="check"><input type="checkbox" id="burst"> Send as a burst of 3 rapid payments</label>
+            </fieldset>
+            <div><button class="btn" type="submit" id="submitBtn">Check payment</button></div>
+            <p class="small" style="margin:0">Test payments update this customer’s behaviour profile, just like real traffic would.</p>
+          </form>
+        </div>
+        <div class="card" aria-live="polite">
+          <div class="card-head"><div><h2>ZeroLag decision</h2><p id="resultSub">Result for the last payment checked</p></div></div>
+          <div class="card-body" id="result"><div class="empty">Choose a scenario or fill in the details, then select <b>Check payment</b>.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MODEL & GOVERNANCE ============ -->
+    <section role="tabpanel" id="p-model" aria-labelledby="t-model" hidden>
+      <div class="page-head">
+        <h1>Model &amp; governance</h1>
+        <p>How well the model performs on a week of payments it never saw during training, whether it treats customers fairly, and how customer data is protected.</p>
+      </div>
+      <div class="grid g-2e">
+        <div class="card"><div class="card-head"><div><h2>Performance on unseen data</h2><p id="testSet">Held-out final week</p></div></div>
+          <div class="table-wrap"><table><tbody id="perf"></tbody></table></div></div>
+        <div class="card"><div class="card-head"><div><h2>Scams caught, by type</h2><p>Share of each scam type warned or held</p></div></div>
+          <div class="card-body" id="types"></div></div>
+        <div class="card"><div class="card-head"><div><h2>Fairness audit by customer age</h2><p>Age is never a model input. It is used only for this check.</p></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Age group</th><th class="r">Genuine payments interrupted</th><th class="r">Scams caught</th></tr></thead><tbody id="fair"></tbody></table></div>
+          <div class="card-body small">Similar rates across groups mean older customers, the main targets of digital-arrest scams, are protected as well as everyone else and are not over-blocked.</div></div>
+        <div class="card"><div class="card-head"><div><h2>Decision rules</h2><p>How a risk score becomes a decision</p></div></div>
+          <div class="card-body"><ul class="plain" id="rules"></ul></div></div>
+        <div class="card"><div class="card-head"><div><h2>Privacy and security controls</h2></div></div>
+          <div class="card-body"><ul class="plain">
+            <li><b>Tokenised identities.</b> UPI IDs and device IDs are replaced by keyed HMAC-SHA256 tokens on arrival. The model and logs never see them.</li>
+            <li><b>Masked display.</b> Analysts see masked IDs such as <span class="mono">us***48@okaxis</span> only.</li>
+            <li><b>No protected attributes.</b> Age and other demographics are not used to make decisions.</li>
+            <li><b>Explainable by default.</b> Every warning and hold lists the signals that caused it.</li>
+            <li><b>Human oversight.</b> A hold pauses a payment; it never cancels it.</li>
+          </ul></div></div>
+        <div class="card"><div class="card-head"><div><h2>Platform</h2><p>Where this console’s scoring engine is running</p></div></div>
+          <div class="card-body"><dl class="kv" id="platform"></dl></div></div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section role="tabpanel" id="p-help" aria-labelledby="t-help" hidden>
+      <div class="page-head">
+        <h1>How it works</h1>
+        <p>What happens in the few milliseconds between a customer pressing “Pay” and the money moving.</p>
+      </div>
+      <div class="grid g-2e">
+        <div class="card"><div class="card-head"><h2>The decision path</h2></div>
+          <ol class="steps">
+            <li><div><b>Protect identities</b><p>The payment arrives from the bank’s UPI system. Account and device IDs are tokenised immediately.</p></div></li>
+            <li><div><b>Compare with normal behaviour</b><p>14 signals are computed from the customer’s and the receiver’s live history: usual amounts, trusted receivers and devices, bursts of payments, how many people paid this receiver today, and whether the customer is on a call.</p></div></li>
+            <li><div><b>Score the risk</b><p>A gradient-boosted model trained on known scam patterns gives a risk score. A second model flags behaviour never seen in genuine traffic.</p></div></li>
+            <li><div><b>Explain</b><p>Each signal is reset to a normal value to measure how much it raised the risk. The strongest signals become the reasons shown here.</p></div></li>
+            <li><div><b>Decide and inform</b><p>The payment is allowed, warned or held. Warned and held customers get a message specific to the scam, in English and Hindi.</p></div></li>
+          </ol></div>
+        <div class="stack-lg">
+          <div class="card"><div class="card-head"><h2>Scams ZeroLag looks for</h2></div>
+            <div class="card-body"><ul class="plain">
+              <li><b>Digital arrest.</b> A fake police or CBI officer keeps the victim on a call and directs transfers.</li>
+              <li><b>Collect-request scams.</b> “Approve to receive a prize”. Approving actually sends money.</li>
+              <li><b>Account takeover.</b> After a SIM swap, a new phone drains the account in minutes.</li>
+              <li><b>Money mules.</b> Accounts that collect from many victims and pass the money on.</li>
+            </ul></div></div>
+          <div class="card"><div class="card-head"><h2>Glossary</h2></div>
+            <div class="card-body"><dl class="kv">
+              <dt>Risk score</dt><dd>The model’s estimate, from 0 to 100%, that the payment is a scam.</dd>
+              <dt>Warned (step-up)</dt><dd>The customer must read a warning and confirm before the payment proceeds.</dd>
+              <dt>Held</dt><dd>The payment is paused until the customer or bank verifies it.</dd>
+              <dt>New receiver</dt><dd>A receiver becomes trusted only 24 hours after the first payment to them.</dd>
+              <dt>Novelty detector</dt><dd>Flags combinations of behaviour that never occur in genuine traffic.</dd>
+              <dt>Decision time</dt><dd>Time to tokenise, compute signals, score, explain and decide one payment.</dd>
+            </dl></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="detail" aria-labelledby="dTitle" closedby="any">
+  <div class="dlg-head">
+    <div><div id="dBadge"></div><h2 id="dTitle" style="font-size:18px;font-weight:400;margin-top:8px"></h2><div class="small" id="dSub"></div></div>
+    <form method="dialog"><button class="x" aria-label="Close">×</button></form>
+  </div>
+  <div class="dlg-body" id="dBody"></div>
+</dialog>
 
 <script>
-const $ = s => document.querySelector(s);
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
-let since = 0, running = true, customers = [];
+const pct = (x, d = 1) => (x * 100).toFixed(d) + "%";
+const LABEL = { ALLOW: "Allowed", STEP_UP: "Warned", HOLD: "Held" };
+const ICON = {
+  ALLOW: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+  STEP_UP: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5L15 14H1z" fill="currentColor"/><path d="M8 6v4M8 11.5v1" stroke="#fff" stroke-width="1.6"/></svg>',
+  HOLD: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M6 5v6M10 5v6" stroke="#fff" stroke-width="1.8"/></svg>',
+};
+const FRAUD = { digital_arrest: "Digital arrest", account_takeover: "Account takeover", collect_scam: "Collect-request scam", mule_cashout: "Mule cash-out" };
+const VERDICT = {
+  ALLOW: ["Payment allowed", "The payment looks normal for this customer and went through without interruption."],
+  STEP_UP: ["Customer warned", "The customer saw a warning and must confirm before the payment proceeds."],
+  HOLD: ["Payment held", "The payment was paused before any money moved. The customer was told why and can verify with the bank."],
+};
+const badge = d => `<span class="badge b-${d}">${ICON[d]}${LABEL[d]}</span>`;
+const time = ts => new Date(ts * 1000).toLocaleTimeString("en-IN", { hour12: false, timeZone: "Asia/Kolkata" });
+const api = (p, body) => fetch(p, body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {}).then(r => r.json());
 
-function card(r, compact) {
-  const reasons = (r.reasons || []).map(x =>
-    `<li>${x.text} <span class="imp">(+${(x.impact * 100).toFixed(0)} pts)</span></li>`).join("");
-  const truth = r.label == null ? "" : r.label == 1
-    ? `<span class="truth f">ground truth: ${r.fraud_type}</span>`
-    : `<span class="truth">ground truth: legit</span>`;
-  const nudge = r.nudge ? `<div class="nudge"><span class="imp">Customer message</span><br>${r.nudge.en}<div class="hi">${r.nudge.hi}</div></div>` : "";
-  return `<div class="card ${r.decision}">
-    <div class="row">
-      <span class="badge b-${r.decision}">${r.decision.replace("_", "-")}</span>
-      <span class="amt">${inr(r.amount)}</span>
-      <span class="who">${r.payer} → ${r.payee}</span>
-      <span class="spacer" style="flex:1"></span>
-      <span class="risk"><i style="width:${Math.max(3, r.risk * 100)}%"></i></span>
-      <span class="imp">risk ${(r.risk * 100).toFixed(0)}% · ${r.latency_ms} ms</span>
-    </div>
-    ${reasons ? `<ul class="reasons">${reasons}</ul>` : ""}
-    ${nudge}
-    <div class="row" style="margin-top:6px"><span class="imp">${r.txn_type} · ${r.city}${r.novel ? " · novelty detector fired" : ""}</span><span style="flex:1"></span>${compact ? "" : truth}</div>
-  </div>`;
+const state = { since: 0, alerts: [], pending: 0, filter: "all", q: "", stats: null, thresholds: { step_up: 0.05, hold: 0.5 },
+                bins: [], lastScored: null, lastT: null, rate: 0, running: true, customers: [] };
+$$("[data-icon]").forEach(el => el.insertAdjacentHTML("afterbegin", ICON[el.dataset.icon]));
+
+/* ---------------- tabs ---------------- */
+const tabs = $$('[role="tab"]');
+function selectTab(tab, focus) {
+  tabs.forEach(t => { const on = t === tab; t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute("aria-controls")).hidden = !on; });
+  if (focus) tab.focus();
+  if (tab.id === "t-alerts") renderQueue(true);
+  history.replaceState(null, "", "#" + tab.id.slice(2));
+}
+tabs.forEach(t => t.addEventListener("click", () => selectTab(t)));
+$("#tabs").addEventListener("keydown", e => {
+  const i = tabs.indexOf(document.activeElement); if (i < 0) return;
+  const k = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+  if (k) { e.preventDefault(); selectTab(tabs[(i + k + tabs.length) % tabs.length], true); }
+  if (e.key === "Home") { e.preventDefault(); selectTab(tabs[0], true); }
+  if (e.key === "End") { e.preventDefault(); selectTab(tabs.at(-1), true); }
+});
+$("#toQueue").addEventListener("click", () => selectTab($("#t-alerts")));
+const fromHash = () => { const t = document.getElementById("t-" + location.hash.slice(1)); if (t && t.getAttribute("aria-selected") !== "true") selectTab(t); };
+window.addEventListener("hashchange", fromHash); fromHash();
+
+/* ---------------- rows ---------------- */
+function riskCell(r) {
+  const c = r.decision === "HOLD" ? "h" : r.decision === "STEP_UP" ? "w" : "";
+  return `<span class="riskbar ${c}"><span class="trk"><i style="width:${Math.max(2, r.risk * 100)}%"></i></span><span class="num">${Math.round(r.risk * 100)}%</span></span>`;
+}
+const mainReason = r => esc(r.reasons?.[0]?.text || "—");
+function truth(r) {
+  if (r.source === "api") return '<span class="tag">Test payment</span>';
+  return r.label == 1 ? `<span class="tag fraud">Scam: ${esc(FRAUD[r.fraud_type] || r.fraud_type)}</span>` : '<span class="tag">Genuine</span>';
+}
+function row(r, full) {
+  return `<tr class="click" tabindex="0" data-seq="${r.seq}">
+    <td data-l="Time" class="num">${time(r.ts)}</td>
+    <td data-l="Decision">${badge(r.decision)}</td>
+    <td data-l="Amount" class="r num">${inr(r.amount)}</td>
+    <td data-l="From → To" class="mono">${esc(r.payer)} → ${esc(r.payee)}</td>
+    ${full ? `<td data-l="Risk">${riskCell(r)}</td>` : ""}
+    <td data-l="Main reason" class="reason-cell">${mainReason(r)}</td>
+    ${full ? `<td data-l="Simulation label">${truth(r)}</td>` : ""}
+  </tr>`;
+}
+function bindRows(tbody) {
+  tbody.onclick = e => { const tr = e.target.closest("tr[data-seq]"); if (tr) openDetail(+tr.dataset.seq); };
+  tbody.onkeydown = e => { if ((e.key === "Enter" || e.key === " ") && e.target.matches("tr[data-seq]")) { e.preventDefault(); openDetail(+e.target.dataset.seq); } };
+}
+bindRows($("#latest")); bindRows($("#queue"));
+
+function renderLatest() {
+  const list = state.alerts.filter(a => a.source === "stream").slice(0, 6);
+  if (list.length) $("#latest").innerHTML = list.map(r => row(r, false)).join("");
+}
+function renderQueue(force) {
+  if (!force && !$("#autoUpd").checked) {
+    $("#newBanner").hidden = state.pending === 0;
+    $("#newText").textContent = `${state.pending} new alert${state.pending === 1 ? "" : "s"} since you paused updates.`;
+    return;
+  }
+  state.pending = 0; $("#newBanner").hidden = true;
+  const q = state.q.toLowerCase();
+  const list = state.alerts.filter(a => (state.filter === "all" || a.decision === state.filter) &&
+    (!q || [a.payer, a.payee, a.city, ...(a.reasons || []).map(x => x.text)].join(" ").toLowerCase().includes(q)));
+  $("#queue").innerHTML = list.length ? list.slice(0, 200).map(r => row(r, true)).join("")
+    : `<tr><td colspan="7" class="empty">${state.alerts.length ? "No alerts match this filter." : "No alerts yet."}</td></tr>`;
+  const n = d => state.alerts.filter(a => a.decision === d).length;
+  $("#fAll").textContent = `(${state.alerts.length})`; $("#fHold").textContent = `(${n("HOLD")})`; $("#fWarn").textContent = `(${n("STEP_UP")})`;
+}
+$$(".seg button").forEach(b => b.addEventListener("click", () => {
+  $$(".seg button").forEach(x => x.setAttribute("aria-pressed", x === b)); state.filter = b.dataset.f; renderQueue(true);
+}));
+$("#q").addEventListener("input", e => { state.q = e.target.value; renderQueue(true); });
+$("#autoUpd").addEventListener("change", e => { if (e.target.checked) renderQueue(true); });
+$("#showNew").addEventListener("click", () => renderQueue(true));
+
+/* ---------------- detail ---------------- */
+function scaleHtml(risk) {
+  const w1 = state.thresholds.step_up * 100, w2 = state.thresholds.hold * 100;
+  return `<div class="scale" style="--w1:${w1}%;--w2:${w2}%">
+    <div class="bar"><span class="mark" style="left:calc(${Math.min(99.5, risk * 100)}% - 1px)"></span></div>
+    <div class="ticks"><span>0%</span><span>Warn from ${Math.round(w1)}%</span><span>Hold from ${Math.round(w2)}%</span><span>100%</span></div></div>`;
+}
+function explainHtml(r) {
+  const max = Math.max(...(r.reasons || []).map(x => x.impact), 0.01);
+  const reasons = r.reasons?.length ? `<ul class="reasons">${r.reasons.map(x => `<li><span>${esc(x.text)}</span>
+      <span class="imp" title="Increase in risk caused by this signal"><span><i style="width:${(x.impact / max) * 100}%"></i></span>+${Math.round(x.impact * 100)} pts</span></li>`).join("")}</ul>`
+    : `<p class="muted" style="margin:0">No unusual signals. The payment matches this customer’s normal behaviour.</p>`;
+  const msg = r.nudge ? `<div class="section"><h3>What the customer sees</h3><div class="msg"><p>${esc(r.nudge.en)}</p><p class="hi" lang="hi">${esc(r.nudge.hi)}</p></div></div>` : "";
+  return `<div class="verdict ${r.decision}">${badge(r.decision)}<div class="t">${VERDICT[r.decision][0]}</div><p>${VERDICT[r.decision][1]}</p></div>
+    <div class="section"><h3>Risk score: ${Math.round(r.risk * 100)}%</h3>${scaleHtml(r.risk)}</div>
+    <div class="section"><h3>Why ZeroLag ${r.decision === "ALLOW" ? "allowed" : "flagged"} this payment</h3>${reasons}
+      ${r.novel ? '<p class="small" style="margin:0">The novelty detector also fired: this combination of behaviour does not occur in genuine traffic.</p>' : ""}</div>
+    ${msg}`;
+}
+function openDetail(seq) {
+  const r = state.alerts.find(a => a.seq === seq); if (!r) return;
+  $("#dBadge").innerHTML = badge(r.decision);
+  $("#dTitle").textContent = `${inr(r.amount)} from ${r.payer} to ${r.payee}`;
+  $("#dSub").textContent = `Payment ${r.txn_id || ""} · decided in ${r.latency_ms} ms`;
+  $("#dBody").innerHTML = explainHtml(r) + `<div class="section"><h3>Payment details</h3><dl class="kv">
+      <dt>Payer</dt><dd class="mono">${esc(r.payer)}</dd><dt>Receiver</dt><dd class="mono">${esc(r.payee)}</dd>
+      <dt>Amount</dt><dd>${inr(r.amount)}</dd><dt>Type</dt><dd>${{P2P: "Send money to a person", P2M: "Pay a merchant", COLLECT: "Collect request approved"}[r.txn_type] || esc(r.txn_type)}</dd>
+      <dt>Location</dt><dd>${esc(r.city)}</dd><dt>Payment time</dt><dd>${time(r.ts)} IST</dd>
+      <dt>Decision time</dt><dd>${r.latency_ms} ms</dd><dt>Simulation label</dt><dd>${truth(r)}</dd></dl></div>`;
+  $("#detail").showModal();
 }
 
+/* ---------------- chart ---------------- */
+const BIN = 10, NBINS = 18;
+function bump(decision) {
+  const b = Math.floor(Date.now() / 1000 / BIN) * BIN;
+  let last = state.bins.at(-1);
+  if (!last || last.t !== b) { state.bins.push(last = { t: b, warn: 0, hold: 0 }); }
+  if (decision === "HOLD") last.hold++; else if (decision === "STEP_UP") last.warn++;
+}
+function renderChart() {
+  const now = Math.floor(Date.now() / 1000 / BIN) * BIN;
+  const bins = []; for (let i = NBINS - 1; i >= 0; i--) { const t = now - i * BIN; bins.push(state.bins.find(b => b.t === t) || { t, warn: 0, hold: 0 }); }
+  state.bins = state.bins.filter(b => b.t > now - NBINS * BIN);
+  const svg = $("#chart"), W = svg.clientWidth || 600, H = 220, L = 32, B = 22, T = 8;
+  const max = Math.max(4, ...bins.map(b => b.warn + b.hold)); const top = Math.ceil(max / 4) * 4;
+  const y = v => T + (H - T - B) * (1 - v / top), bw = (W - L) / NBINS, gap = Math.max(4, bw * 0.28);
+  let g = "";
+  for (let i = 0; i <= 4; i++) { const v = top * i / 4; g += `<line x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="var(--chart-grid)"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="var(--text-3)">${v}</text>`; }
+  bins.forEach((b, i) => {
+    const x = L + i * bw + gap / 2, w = bw - gap;
+    if (b.hold) g += `<rect x="${x}" y="${y(b.hold)}" width="${w}" height="${y(0) - y(b.hold)}" fill="var(--chart-hold)"/>`;
+    if (b.warn) g += `<rect x="${x}" y="${y(b.hold + b.warn)}" width="${w}" height="${Math.max(0, y(b.hold) - y(b.hold + b.warn) - 2)}" rx="2" fill="var(--chart-warn)"/>`;
+    g += `<rect class="hit" data-i="${i}" x="${L + i * bw}" y="${T}" width="${bw}" height="${H - T - B}" fill="transparent"/>`;
+  });
+  g += `<text x="${L}" y="${H - 4}" font-size="11" fill="var(--text-3)">3 min ago</text><text x="${W}" y="${H - 4}" text-anchor="end" font-size="11" fill="var(--text-3)">now</text>`;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g; svg._bins = bins;
+}
+$("#chart").addEventListener("mousemove", e => {
+  const hit = e.target.closest(".hit"), tip = $("#tip");
+  if (!hit) { tip.style.display = "none"; return; }
+  const b = e.currentTarget._bins[+hit.dataset.i], r = $("#chartWrap").getBoundingClientRect(), hr = hit.getBoundingClientRect();
+  const ago = Math.round((Math.floor(Date.now() / 1000 / BIN) * BIN - b.t));
+  tip.innerHTML = `<b>${ago ? ago + " s ago" : "Current interval"}</b><br>Held: ${b.hold}<br>Warned: ${b.warn}`;
+  tip.style.left = (hr.left - r.left + hr.width / 2) + "px"; tip.style.top = (e.clientY - r.top) + "px"; tip.style.display = "block";
+});
+$("#chart").addEventListener("mouseleave", () => $("#tip").style.display = "none");
+
+/* ---------------- polling ---------------- */
 async function poll() {
   try {
-    const items = await (await fetch(`/api/feed?since=${since}`)).json();
+    const items = await api(`/api/feed?since=${state.since}`);
     if (items.length) {
-      since = items[items.length - 1].seq;
-      const alerts = $("#alerts"), ticker = $("#ticker");
-      if (alerts.querySelector(".empty") && items.some(r => r.decision !== "ALLOW")) alerts.innerHTML = "";
+      state.since = items.at(-1).seq;
+      let added = 0;
       for (const r of items) {
-        if (r.decision !== "ALLOW" && r.source === "stream") {
-          alerts.insertAdjacentHTML("afterbegin", card(r));
-        }
-        ticker.insertAdjacentHTML("afterbegin",
-          `<div><span>${new Date(r.ts * 1000).toLocaleTimeString("en-IN", {hour12: false})}</span><span>${r.payer} → ${r.payee}</span><span>${inr(r.amount)}</span><span class="d-${r.decision}">${r.decision}</span><span>${r.latency_ms}ms</span></div>`);
+        if (r.source === "stream" && state.started) bump(r.decision);
+        if (r.decision !== "ALLOW") { state.alerts.unshift(r); added++; }
       }
-      while (alerts.children.length > 60) alerts.lastChild.remove();
-      while (ticker.children.length > 120) ticker.lastChild.remove();
+      if (state.alerts.length > 600) state.alerts.length = 600;
+      if (added) { state.pending += added; renderLatest(); if (!$("#p-alerts").hidden) renderQueue(false); }
+      $("#alertCount").textContent = state.alerts.length > 999 ? "999+" : state.alerts.length || "";
     }
-  } catch (e) {}
-  setTimeout(poll, 700);
+    state.started = true;
+  } catch (e) { $("#liveText").textContent = "Connection lost, retrying…"; }
+  renderChart();
+  setTimeout(poll, 1000);
 }
 
-async function stats() {
-  try {
-    const s = await (await fetch("/api/stats")).json();
-    $("#k-scored").textContent = s.scored.toLocaleString("en-IN");
-    $("#k-hold").textContent = s.hold.toLocaleString("en-IN");
-    $("#k-step").textContent = s.step_up.toLocaleString("en-IN");
-    $("#k-caught").textContent = `${s.fraud_caught} / ${s.fraud_seen}`;
-    $("#k-saved").textContent = inr(s.amount_protected);
-    $("#k-lat").textContent = `${s.avg_latency_ms} ms`;
-    if (!$("#mc").dataset.done && s.offline) renderModel(s.offline);
-  } catch (e) {}
-  setTimeout(stats, 1000);
+function renderStats(s) {
+  const legit = Math.max(1, s.scored - s.fraud_seen);
+  $("#kScored").textContent = s.scored.toLocaleString("en-IN");
+  $("#kCaught").innerHTML = `${s.fraud_caught.toLocaleString("en-IN")}<small>/ ${s.fraud_seen.toLocaleString("en-IN")}</small>`;
+  $("#kCaughtH").textContent = s.fraud_seen ? `${pct(s.fraud_caught / s.fraud_seen)} of scams warned or held before money moved` : "Warned or held before money moved";
+  $("#kSaved").textContent = inr(s.amount_protected);
+  $("#kFriction").textContent = pct(s.legit_flagged / legit, 2);
+  $("#kFrictionH").textContent = `${s.legit_flagged.toLocaleString("en-IN")} of ${legit.toLocaleString("en-IN")} honest payments saw a warning or hold`;
+  $("#kLat").textContent = `${s.avg_latency_ms} ms`;
+  const tot = Math.max(1, s.scored);
+  [["Allow", s.allow], ["Warn", s.step_up], ["Hold", s.hold]].forEach(([k, v]) => {
+    $("#n" + k).textContent = v.toLocaleString("en-IN"); $("#p" + k).textContent = pct(v / tot, 2); });
+  // live rate
+  const now = performance.now();
+  if (state.lastScored != null && now > state.lastT) state.rate = 0.6 * state.rate + 0.4 * ((s.scored - state.lastScored) / ((now - state.lastT) / 1000));
+  state.lastScored = s.scored; state.lastT = now;
+  state.running = s.stream.running;
+  $("#live").classList.toggle("paused", !state.running);
+  $("#liveText").textContent = state.running ? `Live · ${Math.round(state.rate)} payments/s` : "Stream paused";
+  $("#pause").textContent = state.running ? "Pause stream" : "Resume stream";
+  if (document.activeElement !== $("#speed")) $("#speed").value = String(Math.round(s.stream.tps));
+}
+
+function renderPlatform(h) {
+  const z = h.arch === "s390x";
+  $("#envText").textContent = z ? "IBM LinuxONE · s390x" : `${h.os} · ${h.arch}`;
+  $("#platform").innerHTML = `<dt>Architecture</dt><dd>${esc(h.arch)}${z ? " (IBM Z / LinuxONE)" : ""}</dd><dt>Operating system</dt><dd>${esc(h.os)}</dd>
+    <dt>Host</dt><dd class="mono">${esc(h.node)}</dd><dt>Python</dt><dd>${esc(h.python)}</dd>
+    <dt>Live decision time</dt><dd>${state.stats.avg_latency_ms} ms average · ${state.stats.lat_max.toFixed(1)} ms slowest</dd>`;
 }
 
 function renderModel(m) {
-  const pct = x => (x * 100).toFixed(1) + "%";
+  state.thresholds = m.thresholds;
+  $("#testSet").textContent = `Held-out final week: ${m.test_txns.toLocaleString("en-IN")} payments, ${m.test_fraud} scams`;
   const rows = [
-    ["Scams caught (warn or hold)", pct(m.flag_recall)],
-    ["Hold precision", pct(m.hold_precision)],
-    ["Fraud money intercepted", pct(m.fraud_amount_intercepted / m.fraud_amount_total)],
-    ["Genuine payments with any friction", pct(m.legit_friction_rate)],
-    ["Genuine payments held", pct(m.legit_blocked_rate)],
-    ["PR-AUC / ROC-AUC", `${m.pr_auc} / ${m.roc_auc}`],
-    ["Latency p50 / p99", `${m.latency_ms?.p50} / ${m.latency_ms?.p99} ms`],
-    ["Test set", `${m.test_txns.toLocaleString()} txns · ${m.test_fraud} scams`],
-  ];
-  $("#mc").innerHTML = rows.map(([k, v]) => `<tr><td>${k}</td><td class="n">${v}</td></tr>`).join("");
-  $("#fair").innerHTML = `<tr><th>Age group</th><th>Genuine flagged</th><th>Scams caught</th></tr>` +
-    Object.entries(m.fairness_by_age_group).map(([g, v]) =>
-      `<tr><td>${g}</td><td class="n">${pct(v.legit_friction_rate)}</td><td class="n">${v.fraud_recall == null ? "–" : pct(v.fraud_recall)}</td></tr>`).join("");
-  $("#types").innerHTML = `<tr><th>Scam type</th><th>Caught</th></tr>` +
-    Object.entries(m.recall_by_fraud_type).map(([t, v]) =>
-      `<tr><td>${t.replace("_", " ")}</td><td class="n">${pct(v)}</td></tr>`).join("");
-  $("#mc").dataset.done = 1;
+    ["Scams caught (warned or held)", pct(m.flag_recall)], ["Fraud value intercepted", pct(m.fraud_amount_intercepted / m.fraud_amount_total)],
+    ["Held payments that were really scams", pct(m.hold_precision)], ["Genuine payments interrupted", pct(m.legit_friction_rate, 2)],
+    ["Genuine payments held", pct(m.legit_blocked_rate, 2)], ["Decision time, median / 99th percentile", m.latency_ms ? `${m.latency_ms.p50} / ${m.latency_ms.p99} ms` : "—"],
+    ["Ranking quality (PR-AUC / ROC-AUC)", `${m.pr_auc} / ${m.roc_auc}`]];
+  $("#perf").innerHTML = rows.map(([k, v]) => `<tr><th scope="row">${k}</th><td class="r num">${v}</td></tr>`).join("");
+  $("#types").innerHTML = Object.entries(m.recall_by_fraud_type).sort((a, b) => b[1] - a[1]).map(([t, v]) =>
+    `<div class="hbar"><span>${esc(FRAUD[t] || t)}</span><span class="track" role="img" aria-label="${pct(v)}"><i style="width:${v * 100}%"></i></span><span class="v">${pct(v)}</span></div>`).join("");
+  $("#fair").innerHTML = Object.entries(m.fairness_by_age_group).map(([g, v]) =>
+    `<tr><th scope="row">${g === "56+" ? "56 and over" : g.replace("-", "–")}</th><td class="r num">${pct(v.legit_friction_rate, 2)}</td><td class="r num">${v.fraud_recall == null ? "—" : pct(v.fraud_recall)}</td></tr>`).join("");
+  $("#rules").innerHTML = `
+    <li><b>Allow</b> when the risk score is below ${Math.round(m.thresholds.step_up * 100)}% and the behaviour is familiar.</li>
+    <li><b>Warn</b> when the risk score is ${Math.round(m.thresholds.step_up * 100)}% or more, or the novelty detector sees behaviour never found in genuine traffic. Thresholds were set so that about 97% of scams receive at least a warning.</li>
+    <li><b>Hold</b> when the risk score is ${Math.round(m.thresholds.hold * 100)}% or more. Set so that at least 90% of held payments are real scams.</li>
+    <li>Thresholds are tuned on days 18–22 and tested on days 23–30, so performance is always measured on future, unseen payments.</li>`;
 }
 
-async function loadCustomers() {
-  customers = await (await fetch("/api/customers")).json();
-  $("#cust").innerHTML = customers.map((c, i) =>
-    `<option value="${i}">${c.payer_vpa} · age ${c.age} · ${c.city} · usually ${inr(c.median_amount)}</option>`).join("");
+async function statsLoop() {
+  try {
+    const s = await api("/api/stats"); state.stats = s;
+    renderStats(s);
+    if (!state.modelDone && s.offline?.thresholds) { renderModel(s.offline); state.modelDone = true; }
+    if (s.host) renderPlatform(s.host);
+  } catch (e) {}
+  setTimeout(statsLoop, 1000);
 }
 
-const CITIES = ["Bengaluru", "Chennai", "Mumbai", "Delhi", "Hyderabad", "Kolkata"];
-function scenario(kind, c) {
-  const base = {payer_vpa: c.payer_vpa, device_id: c.device_id, city: c.city, on_call: 0,
-                payee_account_age_days: 900, txn_type: "P2M", payee_vpa: "merchant00042@okaxis",
-                amount: Math.round(c.median_amount)};
-  const mule = "acct9" + String(Math.floor(Math.random() * 9000) + 1000) + "@ybl";
-  if (kind === "arrest") return [{...base, txn_type: "P2P", payee_vpa: mule, on_call: 1,
-                                   payee_account_age_days: 6, amount: 95000}];
-  if (kind === "collect") return [{...base, txn_type: "COLLECT", payee_vpa: mule, amount: 4999,
-                                    payee_account_age_days: 12}];
-  if (kind === "ato") {
-    const dev = "dev-" + Math.random().toString(16).slice(2, 12);
-    const city = CITIES.find(x => x !== c.city);
-    return [0, 1, 2].map(i => ({...base, txn_type: "P2P", device_id: dev, city,
-             payee_vpa: "acct9" + (5000 + i) + "@paytm", payee_account_age_days: 20 + i,
-             amount: Math.round(c.median_amount * (8 + i * 4))}));
-  }
-  return [base];
-}
+$("#pause").addEventListener("click", async () => {
+  state.running = !state.running; await api("/api/stream", { running: state.running });
+  $("#pause").textContent = state.running ? "Pause stream" : "Resume stream";
+});
+$("#speed").addEventListener("change", e => api("/api/stream", { tps: +e.target.value }));
 
-document.querySelectorAll(".scen button").forEach(b => b.onclick = async () => {
-  const c = customers[+$("#cust").value];
-  let last;
-  for (const t of scenario(b.dataset.s, c)) {
-    last = await (await fetch("/api/score", {method: "POST", headers: {"Content-Type": "application/json"},
-                                             body: JSON.stringify(t)})).json();
-  }
-  $("#tryResult").innerHTML = card(last, true);
+/* ---------------- test a payment ---------------- */
+const CITIES = ["Bengaluru", "Chennai", "Mumbai", "Delhi", "Hyderabad", "Pune", "Kolkata", "Jaipur", "Lucknow", "Kochi", "Bhopal", "Patna"];
+const cust = () => state.customers[+$("#cust").value];
+function fillCities(home) {
+  $("#city").innerHTML = `<option value="${esc(home)}">${esc(home)} (home city)</option>` +
+    CITIES.filter(c => c !== home).map(c => `<option value="${c}">${c}</option>`).join("");
+}
+function showProfile() {
+  const c = cust(); if (!c) return;
+  $("#profile").innerHTML = `<div>Age<b>${c.age}</b></div><div>Home city<b>${esc(c.city)}</b></div>
+    <div>Usual payment<b>${inr(c.median_amount)}</b></div><div>Regular payee<b class="mono">${esc(c.regular_payee.replace(/^(..).*(..@)/, "$1***$2"))}</b></div>`;
+  fillCities(c.city); preset("normal");
+}
+function preset(p) {
+  const c = cust(); const usual = Math.max(50, Math.round(c.median_amount));
+  const set = { ptype: "P2M", amount: usual, recv: "regular", recvAge: 900, device: "usual", city: c.city, onCall: false, burst: false };
+  if (p === "normal") set.ptype = c.regular_payee.startsWith("merchant") ? "P2M" : "P2P";
+  if (p === "arrest") Object.assign(set, { ptype: "P2P", amount: 95000, recv: "new", recvAge: 6, onCall: true });
+  if (p === "collect") Object.assign(set, { ptype: "COLLECT", amount: 4999, recv: "new", recvAge: 12 });
+  if (p === "ato") Object.assign(set, { ptype: "P2P", amount: Math.min(100000, usual * 10), recv: "new", recvAge: 20, device: "new", city: CITIES.find(x => x !== c.city), burst: true });
+  for (const [k, v] of Object.entries(set)) { const el = $("#" + k); if (el.type === "checkbox") el.checked = v; else el.value = v; }
+  $("#recvAge").disabled = set.recv === "regular";
+}
+$("#cust").addEventListener("change", showProfile);
+$("#recv").addEventListener("change", e => { $("#recvAge").disabled = e.target.value === "regular"; if (e.target.value === "regular") $("#recvAge").value = 900; });
+$$(".preset").forEach(b => b.addEventListener("click", () => { preset(b.dataset.p); $("#testForm").requestSubmit(); }));
+
+$("#testForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const c = cust(), btn = $("#submitBtn"); btn.disabled = true; btn.textContent = "Checking…";
+  const dev = $("#device").value === "new" ? "dev-test-" + Math.random().toString(16).slice(2, 10) : c.device_id;
+  const n = $("#burst").checked ? 3 : 1; let last;
+  try {
+    for (let i = 0; i < n; i++) {
+      const payee = $("#recv").value === "regular" ? c.regular_payee : `acct9${Math.floor(1000 + Math.random() * 8999)}@ybl`;
+      last = await api("/api/score", { payer_vpa: c.payer_vpa, payee_vpa: payee, amount: +$("#amount").value, device_id: dev,
+        city: $("#city").value, txn_type: $("#ptype").value, on_call: $("#onCall").checked ? 1 : 0, payee_account_age_days: +$("#recvAge").value });
+      if (last.error) throw new Error(last.error);
+    }
+    $("#resultSub").textContent = n > 1 ? `Result for the 3rd of 3 rapid payments · decided in ${last.latency_ms} ms` : `Decided in ${last.latency_ms} ms`;
+    $("#result").innerHTML = `<div class="stack-lg">${explainHtml(last)}</div>`;
+  } catch (err) {
+    $("#result").innerHTML = `<div class="verdict HOLD"><div class="t">Could not check this payment</div><p>${esc(err.message)}</p></div>`;
+  } finally { btn.disabled = false; btn.textContent = "Check payment"; }
 });
 
-$("#toggle").onclick = async () => {
-  running = !running;
-  await fetch("/api/stream", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({running})});
-  $("#toggle").textContent = running ? "Pause stream" : "Resume stream";
-};
-$("#tps").oninput = e => $("#tpsLabel").textContent = `${e.target.value} txn/s`;
-$("#tps").onchange = e => fetch("/api/stream", {method: "POST", headers: {"Content-Type": "application/json"},
-                                               body: JSON.stringify({tps: +e.target.value})});
+async function loadCustomers() {
+  state.customers = await api("/api/customers");
+  $("#cust").innerHTML = state.customers.map((c, i) => `<option value="${i}">Customer ${esc(c.payer_vpa.replace(/^(..).*(..@)/, "$1***$2"))} · age ${c.age} · ${esc(c.city)}</option>`).join("");
+  showProfile();
+}
 
-loadCustomers(); poll(); stats();
+window.addEventListener("resize", renderChart);
+loadCustomers(); statsLoop(); poll();
 </script>
 </body>
 </html>

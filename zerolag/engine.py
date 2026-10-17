@@ -28,7 +28,7 @@ def _reason(feat: str, f: dict, t: dict) -> str | None:
         "on_call": "Customer is on a live phone call while paying (scammer coaching pattern)" if x else None,
         "is_collect": "This is a COLLECT request: approving it SENDS money" if x else None,
         "is_night": "Unusual hour (late night)" if x else None,
-        "payee_age_log": (f"Receiving account opened only {int(np.expm1(x))} days ago"
+        "payee_age_log": (f"Receiving account opened only {round(float(np.expm1(x)))} days ago"
                           if np.expm1(x) < 60 else None),
         "payer_txns_1h": f"{int(x) + 1} payments within an hour (burst)" if x >= 2 else None,
         "payer_spend_24h_vs_usual": f"Last-24h spend is {x:.0f}x usual" if x >= 5 else None,
@@ -36,13 +36,13 @@ def _reason(feat: str, f: dict, t: dict) -> str | None:
                             if x >= 3 else None),
         "secs_since_last_log": "Rapid follow-up payment" if np.expm1(x) < 600 else None,
         "payer_history_len_log": "Very little history on this account" if np.expm1(x) < 5 else None,
-        "amount_log": f"Large amount (Rs {float(t['amount']):,.0f})" if float(t["amount"]) >= 20_000 else None,
+        "amount_log": f"Large amount (₹{float(t['amount']):,.0f})" if float(t["amount"]) >= 20_000 else None,
     }.get(feat)
 
 
 def _nudge(f: dict, t: dict) -> dict:
     """Plain-language warning shown to the customer, English + Hindi."""
-    amt = f"Rs {float(t['amount']):,.0f}"
+    amt = f"₹{float(t['amount']):,.0f}"
     if f["is_collect"]:
         return {"en": f"You are about to PAY {amt}. You never need to approve a request to RECEIVE money.",
                 "hi": f"आप {amt} भेजने वाले हैं। पैसे पाने के लिए कभी भी रिक्वेस्ट स्वीकार करने की ज़रूरत नहीं होती।"}
