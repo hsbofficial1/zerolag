@@ -6,6 +6,6 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
-python -m kavach.data_gen
-python -m kavach.train
-python -m kavach.app
+python -m zerolag.data_gen
+python -m zerolag.train
+python -m zerolag.app

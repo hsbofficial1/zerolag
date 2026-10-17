@@ -1,4 +1,4 @@
-"""Kavach - real-time, privacy-preserving UPI scam shield."""
+"""ZeroLag - real-time, privacy-preserving UPI scam shield."""
 import os
 
 # Per-transaction inference scores ONE row at a time; OpenMP thread start-up costs

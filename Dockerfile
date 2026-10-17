@@ -6,9 +6,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
     && rm -rf /var/lib/apt/lists/*
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY kavach ./kavach
+COPY zerolag ./zerolag
 # generate data + train inside the image so the model is built for this architecture
-RUN python -m kavach.data_gen && python -m kavach.train
+RUN python -m zerolag.data_gen && python -m zerolag.train
 ENV PORT=8000 OMP_NUM_THREADS=1
 EXPOSE 8000
-CMD ["python", "-m", "kavach.app"]
+CMD ["python", "-m", "zerolag.app"]

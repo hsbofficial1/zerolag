@@ -1,4 +1,4 @@
-"""Kavach scoring engine: protect -> features -> score -> explain -> decide.
+"""ZeroLag scoring engine: protect -> features -> score -> explain -> decide.
 
 One call to `Engine.score(raw_txn)` is the whole in-transaction decision path.
 """

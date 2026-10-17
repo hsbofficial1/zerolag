@@ -1,4 +1,4 @@
-"""Kavach API + live demo.
+"""ZeroLag API + live demo.
 
   GET  /                  analyst dashboard
   POST /api/score         score one transaction (the in-transaction call)
@@ -6,7 +6,7 @@
   GET  /api/stats         running KPIs + offline evaluation metrics
   POST /api/stream        {"running": true|false, "tps": 25}
 
-Usage:  python -m kavach.app   (then open http://localhost:8000)
+Usage:  python -m zerolag.app   (then open http://localhost:8000)
 """
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ feed: deque = deque(maxlen=400)
 stats = {"seq": 0, "scored": 0, "allow": 0, "step_up": 0, "hold": 0,
          "fraud_seen": 0, "fraud_caught": 0, "amount_protected": 0.0, "legit_flagged": 0,
          "lat_sum": 0.0, "lat_max": 0.0}
-stream = {"running": True, "tps": float(os.environ.get("KAVACH_TPS", 25)), "pos": 0}
+stream = {"running": True, "tps": float(os.environ.get("ZEROLAG_TPS", 25)), "pos": 0}
 
 
 def _record(res: dict, source: str) -> dict:

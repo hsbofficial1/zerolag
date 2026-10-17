@@ -5,7 +5,7 @@ Time-based split, never random: the model is always tested on the future.
   days 18-22  calibrate decision thresholds
   days 23-29  held-out test (also used for the live demo replay)
 
-Usage:  python -m kavach.train
+Usage:  python -m zerolag.train
 """
 from __future__ import annotations
 

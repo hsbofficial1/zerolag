@@ -12,33 +12,33 @@ India makes 10+ billion UPI payments a month, and scams have scaled with it. The
 
 ## How are you planning to solve the problem? (Brief Overview)
 
-Kavach is a real-time scam shield called inside the payment flow. (1) A privacy layer HMAC-tokenizes UPI and device IDs at ingestion, so nothing downstream sees raw identities. (2) A streaming feature store tracks live behaviour per customer (usual amount, trusted payees/devices/cities, bursts, 24h spend) and per receiver (distinct payers today = mule signal). The same code is used for training and serving, so there is no skew. (3) A gradient-boosted model plus an Isolation-Forest novelty guard scores each payment in ~13 ms. (4) An occlusion explainer turns the top signals into plain reasons. (5) A policy returns ALLOW, STEP-UP (warning + re-confirm) or HOLD, with a scam-specific English/Hindi message and the 1930 helpline. We use time-split evaluation on a 140k-txn simulated UPI stream. Stack: Python, scikit-learn, Flask, live analyst dashboard and REST API, running on LinuxONE.
+ZeroLag is a real-time scam shield called inside the payment flow. (1) A privacy layer HMAC-tokenizes UPI and device IDs at ingestion, so nothing downstream sees raw identities. (2) A streaming feature store tracks live behaviour per customer (usual amount, trusted payees/devices/cities, bursts, 24h spend) and per receiver (distinct payers today = mule signal). The same code is used for training and serving, so there is no skew. (3) A gradient-boosted model plus an Isolation-Forest novelty guard scores each payment in ~13 ms. (4) An occlusion explainer turns the top signals into plain reasons. (5) A policy returns ALLOW, STEP-UP (warning + re-confirm) or HOLD, with a scam-specific English/Hindi message and the 1930 helpline. We use time-split evaluation on a 140k-txn simulated UPI stream. Stack: Python, scikit-learn, Flask, live analyst dashboard and REST API, running on LinuxONE.
 
 ## How does your solution leverage IBM Z / LinuxONE technologies?
 
-Bank and UPI transaction systems already run on IBM Z, so Kavach brings AI to the data instead of shipping payments to an external cloud. The prototype runs natively on LinuxONE (s390x) as a stateless, container-ready service with a single-row, in-transaction scoring path. Production path: the tree model is served via Snap ML / ONNX + IBM Z Deep Learning Compiler on the Telum on-chip AI accelerator, or with Machine Learning for z/OS called from CICS/IMS. The tokenization key moves to the Crypto Express HSM, and pervasive encryption protects data at rest and in flight. The service runs in an IBM Secure Execution / Hyper Protect enclave so even admins can't see customer behaviour, and links use quantum-safe crypto. Z's reliability and scale suit a 24x7 payment rail.
+Bank and UPI transaction systems already run on IBM Z, so ZeroLag brings AI to the data instead of shipping payments to an external cloud. The prototype runs natively on LinuxONE (s390x) as a stateless, container-ready service with a single-row, in-transaction scoring path. Production path: the tree model is served via Snap ML / ONNX + IBM Z Deep Learning Compiler on the Telum on-chip AI accelerator, or with Machine Learning for z/OS called from CICS/IMS. The tokenization key moves to the Crypto Express HSM, and pervasive encryption protects data at rest and in flight. The service runs in an IBM Secure Execution / Hyper Protect enclave so even admins can't see customer behaviour, and links use quantum-safe crypto. Z's reliability and scale suit a 24x7 payment rail.
 
 ## What value does your solution deliver, and who will benefit from it?
 
-Beneficiaries: UPI users, especially elderly and first-time digital users who are the main targets; banks and PSPs; and law enforcement (1930 / I4C). On a held-out week Kavach caught 95.4% of scams and intercepted 98% of fraud value, with only 0.34% of genuine payments seeing any friction and 0.06% held, at 13 ms p50 latency. Every alert has human-readable reasons, so customers understand the warning and analysts and regulators can audit decisions. Age is never a model input, and our fairness audit shows equal protection across age groups. Banks reduce losses, refunds and complaint handling. Customers keep their savings and trust in digital payments, which directly supports financial inclusion: AI for Good.
+Beneficiaries: UPI users, especially elderly and first-time digital users who are the main targets; banks and PSPs; and law enforcement (1930 / I4C). On a held-out week ZeroLag caught 95.4% of scams and intercepted 98% of fraud value, with only 0.34% of genuine payments seeing any friction and 0.06% held, at 13 ms p50 latency. Every alert has human-readable reasons, so customers understand the warning and analysts and regulators can audit decisions. Age is never a model input, and our fairness audit shows equal protection across age groups. Banks reduce losses, refunds and complaint handling. Customers keep their savings and trust in digital payments, which directly supports financial inclusion: AI for Good.
 
 ## Link to all open-source resources used
 
-Python https://www.python.org | NumPy https://github.com/numpy/numpy | pandas https://github.com/pandas-dev/pandas | scikit-learn https://github.com/scikit-learn/scikit-learn | joblib https://github.com/joblib/joblib | Flask https://github.com/pallets/flask | Dataset: none external. Synthetic UPI data generated by our own seeded simulator (kavach/data_gen.py), with fraud patterns based on public NPCI / RBI / I4C (cybercrime.gov.in) advisories.
+Python https://www.python.org | NumPy https://github.com/numpy/numpy | pandas https://github.com/pandas-dev/pandas | scikit-learn https://github.com/scikit-learn/scikit-learn | joblib https://github.com/joblib/joblib | Flask https://github.com/pallets/flask | Dataset: none external. Synthetic UPI data generated by our own seeded simulator (zerolag/data_gen.py), with fraud patterns based on public NPCI / RBI / I4C (cybercrime.gov.in) advisories.
 
 ## Any other document (architecture diagram)
 
-https://github.com/hsbofficial1/kavach/blob/main/docs/architecture.png , https://github.com/hsbofficial1/kavach/blob/main/docs/LINUXONE.md
+https://github.com/hsbofficial1/zerolag/blob/main/docs/architecture.png , https://github.com/hsbofficial1/zerolag/blob/main/docs/LINUXONE.md
 
 ---
 
 # 3-minute video script
 
 **[0:00–0:25] Hook (face to camera or slide)**
-"Imagine a retired teacher kept on a video call for hours by a fake CBI officer, until she transfers her life savings over UPI. By the time she realises, the money has passed through a chain of mule accounts. Stories like this are in the news every week. Scams like this don't break encryption, they break people. The only moment to stop them is *during* the payment. That's Kavach."
+"Imagine a retired teacher kept on a video call for hours by a fake CBI officer, until she transfers her life savings over UPI. By the time she realises, the money has passed through a chain of mule accounts. Stories like this are in the news every week. Scams like this don't break encryption, they break people. The only moment to stop them is *during* the payment. That's ZeroLag."
 
 **[0:25–0:55] Solution (architecture slide)**
-"Kavach sits inside the payment flow on IBM LinuxONE. Every payment is tokenized so no one sees real identities. It's compared against the customer's live behaviour and the receiver's, scored by an AI model in about 13 milliseconds, and then allowed, warned or held, always with a reason."
+"ZeroLag sits inside the payment flow on IBM LinuxONE. Every payment is tokenized so no one sees real identities. It's compared against the customer's live behaviour and the receiver's, scored by an AI model in about 13 milliseconds, and then allowed, warned or held, always with a reason."
 
 **[0:55–2:05] Live demo (screen recording of dashboard)**
 - Show the live stream at 25 txn/s and the KPI tiles ticking. "Thousands of payments, almost all allowed untouched."
@@ -48,7 +48,7 @@ https://github.com/hsbofficial1/kavach/blob/main/docs/architecture.png , https:/
 - Show the terminal on LinuxONE: `uname -m` → s390x, and the running server.
 
 **[2:05–2:40] Results + responsible AI (model card slide)**
-"On a week of traffic it never saw, Kavach caught 95% of scams and 98% of the money, while only 3 in 1,000 genuine payments saw a warning. Age is never used by the model, and our fairness audit shows older users are protected equally, not over-blocked."
+"On a week of traffic it never saw, ZeroLag caught 95% of scams and 98% of the money, while only 3 in 1,000 genuine payments saw a warning. Age is never used by the model, and our fairness audit shows older users are protected equally, not over-blocked."
 
 **[2:40–3:00] Why IBM Z + close**
-"Banks' transactions already live on IBM Z. With Telum's on-chip AI, Crypto Express keys and Secure Execution, Kavach scores every payment where it happens, without the data ever leaving. Kavach: stop the scam before the money moves."
+"Banks' transactions already live on IBM Z. With Telum's on-chip AI, Crypto Express keys and Secure Execution, ZeroLag scores every payment where it happens, without the data ever leaving. ZeroLag: stop the scam before the money moves."

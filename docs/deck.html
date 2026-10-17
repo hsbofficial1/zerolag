@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Kavach: IBM Z Datathon 2026</title>
+<title>ZeroLag: IBM Z Datathon 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Sans+Devanagari:wght@400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
@@ -72,9 +72,9 @@ img.fig { display: block; width: 100%; }
 <section class="slide cover">
   <div class="l">
     <div class="section">IBM Z Datathon 2026 · Real-Time AI for Critical Decisions</div>
-    <h1>Kavach</h1>
+    <h1>ZeroLag</h1>
     <div class="sub">Real-time detection and interruption of UPI payment scams, running inside the transaction on IBM LinuxONE.</div>
-    <div class="meta">Bengaluru hub · 17–18 October 2026<br>github.com/hsbofficial1/kavach</div>
+    <div class="meta">Bengaluru hub · 17–18 October 2026<br>github.com/hsbofficial1/zerolag</div>
   </div>
   <div class="r">
     <div class="k">Scams intercepted</div><div class="v">95.4%<small>of fraudulent payments, held-out week</small></div>
@@ -97,7 +97,7 @@ img.fig { display: block; width: 100%; }
   </table>
   <p style="margin-top:0.3in">UPI processes more than 10 billion payments a month. Once a payment settles, recovery depends on slow freeze-and-refund processes. <b>Prevention has to happen inside the authorisation window.</b></p>
   <div class="source">Sources: NPCI UPI product statistics; RBI and Indian Cyber Crime Coordination Centre (I4C) public advisories on digital-arrest and collect-request fraud.</div>
-  <div class="foot"><span>Kavach</span><span>2</span></div>
+  <div class="foot"><span>ZeroLag</span><span>2</span></div>
 </section>
 
 <!-- 3 · Requirements -->
@@ -109,8 +109,8 @@ img.fig { display: block; width: 100%; }
     <div class="col"><h3>Explainable</h3><p>A customer who is warned needs a reason specific to their situation. An analyst who releases a held payment needs the evidence. A regulator needs an audit trail.</p></div>
     <div class="col"><h3>Private by design</h3><p>Behavioural profiling must not create a new store of identifiable payment data. Identifiers are tokenised before any processing, and demographics are excluded from the model.</p></div>
   </div>
-  <div class="callout" style="margin-top:0.5in">Kavach meets all three requirements in a single service on IBM LinuxONE, next to the systems of record that already process the payment.</div>
-  <div class="foot"><span>Kavach</span><span>3</span></div>
+  <div class="callout" style="margin-top:0.5in">ZeroLag meets all three requirements in a single service on IBM LinuxONE, next to the systems of record that already process the payment.</div>
+  <div class="foot"><span>ZeroLag</span><span>3</span></div>
 </section>
 
 <!-- 4 · Solution -->
@@ -136,7 +136,7 @@ img.fig { display: block; width: 100%; }
       <p style="font-size:10.5pt;color:var(--muted);margin-top:0.12in">The message is selected from the signals that drove the decision and shown in English and Hindi.</p>
     </div>
   </div>
-  <div class="foot"><span>Kavach</span><span>4</span></div>
+  <div class="foot"><span>ZeroLag</span><span>4</span></div>
 </section>
 
 <!-- 5 · Architecture -->
@@ -144,7 +144,7 @@ img.fig { display: block; width: 100%; }
   <div class="section">Architecture</div>
   <h1>Scoring runs on LinuxONE inside the authorisation path. Identifiers are tokenised before any feature or model sees them.</h1>
   <img class="fig" src="architecture.png" style="width:10.6in;margin:0 auto">
-  <div class="foot"><span>Kavach</span><span>5</span></div>
+  <div class="foot"><span>ZeroLag</span><span>5</span></div>
 </section>
 
 <!-- 6 · Method -->
@@ -158,13 +158,13 @@ img.fig { display: block; width: 100%; }
     <div class="col"><h3>Evaluation</h3><p>Time-based split: train on days 1–17, set thresholds on days 18–22, report on days 23–30. The same feature code is used in training replay and live serving, so there is no train/serve skew.</p></div>
   </div>
   <p style="margin-top:0.4in;font-size:11.5pt"><b>Data.</b> 139,755 simulated UPI payments over 30 days (4,000 customers, 600 merchants, 80 mule accounts). It includes four fraud patterns from public advisories and deliberately includes hard cases: large payments to new legitimate receivers, genuine payments made during calls, new merchants, travel, device changes, and long-established accounts used as mules. Real UPI data is not publicly available.</p>
-  <div class="foot"><span>Kavach</span><span>6</span></div>
+  <div class="foot"><span>ZeroLag</span><span>6</span></div>
 </section>
 
 <!-- 7 · Results -->
 <section class="slide">
   <div class="section">Results · held-out final week, 32,854 payments, 437 frauds</div>
-  <h1>Kavach intercepts 95% of scams and 98% of fraud value while affecting fewer than 4 in 1,000 genuine payments.</h1>
+  <h1>ZeroLag intercepts 95% of scams and 98% of fraud value while affecting fewer than 4 in 1,000 genuine payments.</h1>
   <div class="cols c4" style="gap:0.35in">
     <div class="kpi"><div class="v acc">95.4%</div><div class="l">Frauds warned or held (recall)</div></div>
     <div class="kpi"><div class="v acc">98.1%</div><div class="l">Fraud value intercepted</div></div>
@@ -190,7 +190,7 @@ img.fig { display: block; width: 100%; }
     </div>
   </div>
   <div class="source">Results are on simulated data. Production use requires validation on bank data, drift monitoring and periodic re-calibration. Latency measured on a laptop CPU, single thread.</div>
-  <div class="foot"><span>Kavach</span><span>7</span></div>
+  <div class="foot"><span>ZeroLag</span><span>7</span></div>
 </section>
 
 <!-- 8 · Responsible AI -->
@@ -218,7 +218,7 @@ img.fig { display: block; width: 100%; }
       <p style="margin-top:0.2in;font-size:11.5pt">Older customers, who are disproportionately targeted by digital-arrest fraud, receive the same level of protection without a higher false-alarm rate.</p>
     </div>
   </div>
-  <div class="foot"><span>Kavach</span><span>8</span></div>
+  <div class="foot"><span>ZeroLag</span><span>8</span></div>
 </section>
 
 <!-- 9 · Prototype -->
@@ -227,7 +227,7 @@ img.fig { display: block; width: 100%; }
   <h1>The working prototype scores a live transaction stream and exposes a REST scoring API with an analyst console.</h1>
   <img class="fig shot" src="dashboard.png" style="height:4.55in;object-fit:cover;object-position:top left">
   <div class="source">Analyst console: live KPIs, held payments with reason codes and customer messages, interactive scenario testing through POST /api/score, and a masked transaction stream.</div>
-  <div class="foot"><span>Kavach</span><span>9</span></div>
+  <div class="foot"><span>ZeroLag</span><span>9</span></div>
 </section>
 
 <!-- 10 · IBM Z -->
@@ -235,20 +235,20 @@ img.fig { display: block; width: 100%; }
   <div class="section">Why IBM Z and LinuxONE</div>
   <h1>Payment systems already run on IBM Z. Scoring there removes a network hop, a second copy of sensitive data and an external point of failure.</h1>
   <table>
-    <tr><th style="width:24%">Requirement</th><th style="width:38%">IBM Z capability</th><th>Kavach today → production path</th></tr>
+    <tr><th style="width:24%">Requirement</th><th style="width:38%">IBM Z capability</th><th>ZeroLag today → production path</th></tr>
     <tr><td><b>In-transaction inference at scale</b></td><td>Telum on-chip AI accelerator; IBM Snap ML and Z Deep Learning Compiler; Machine Learning for z/OS for CICS/IMS scoring</td><td>Runs natively on LinuxONE (s390x) with a single-row scoring path → tree model served on the on-chip accelerator</td></tr>
     <tr><td><b>Key protection</b></td><td>Crypto Express HSM (CCA / EP11); pervasive encryption</td><td>HMAC tokenisation key from configuration → key held and used inside the HSM</td></tr>
     <tr><td><b>Confidential processing</b></td><td>IBM Secure Execution for Linux; Hyper Protect Virtual Servers</td><td>Stateless container → deployed as a Secure Execution guest</td></tr>
     <tr><td><b>Long-term cryptographic safety</b></td><td>Quantum-safe algorithms (ML-KEM, ML-DSA) on IBM Z</td><td>Standard TLS → quantum-safe TLS and key wrapping, no model change</td></tr>
     <tr><td><b>Availability</b></td><td>IBM Z reliability and vertical scale</td><td>Stateless scoring replicated across cores and LPARs</td></tr>
   </table>
-  <div class="foot"><span>Kavach</span><span>10</span></div>
+  <div class="foot"><span>ZeroLag</span><span>10</span></div>
 </section>
 
 <!-- 11 · Roadmap -->
 <section class="slide">
   <div class="section">Impact and roadmap</div>
-  <h1>Kavach protects the customers most exposed to payment fraud and gives banks an auditable, low-friction control.</h1>
+  <h1>ZeroLag protects the customers most exposed to payment fraud and gives banks an auditable, low-friction control.</h1>
   <div class="cols c3">
     <div class="col"><h3>Beneficiaries</h3>
       <ul>
@@ -270,7 +270,7 @@ img.fig { display: block; width: 100%; }
         <li>Continuous drift and fairness monitoring</li>
       </ul></div>
   </div>
-  <div class="foot"><span>Kavach · github.com/hsbofficial1/kavach</span><span>11</span></div>
+  <div class="foot"><span>ZeroLag · github.com/hsbofficial1/zerolag</span><span>11</span></div>
 </section>
 
 </body>

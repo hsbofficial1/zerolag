@@ -15,7 +15,7 @@ import hashlib
 import hmac
 import os
 
-_KEY = os.environ.get("KAVACH_TOKEN_KEY", "dev-only-key-change-me").encode()
+_KEY = os.environ.get("ZEROLAG_TOKEN_KEY", "dev-only-key-change-me").encode()
 
 
 def tokenize(identifier: str, kind: str = "vpa") -> str:

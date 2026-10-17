@@ -17,7 +17,7 @@ Legit traffic deliberately contains confusing cases (big rent payments to new
 payees, payments made while on a call, night owls) so the model has to learn
 combinations of signals rather than one trivial rule.
 
-Usage:  python -m kavach.data_gen --out data/transactions.csv
+Usage:  python -m zerolag.data_gen --out data/transactions.csv
 """
 from __future__ import annotations
 
