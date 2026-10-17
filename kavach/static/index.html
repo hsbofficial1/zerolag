@@ -150,7 +150,7 @@ function card(r, compact) {
   const truth = r.label == null ? "" : r.label == 1
     ? `<span class="truth f">ground truth: ${r.fraud_type}</span>`
     : `<span class="truth">ground truth: legit</span>`;
-  const nudge = r.nudge ? `<div class="nudge">📱 ${r.nudge.en}<div class="hi">${r.nudge.hi}</div></div>` : "";
+  const nudge = r.nudge ? `<div class="nudge"><span class="imp">Customer message</span><br>${r.nudge.en}<div class="hi">${r.nudge.hi}</div></div>` : "";
   return `<div class="card ${r.decision}">
     <div class="row">
       <span class="badge b-${r.decision}">${r.decision.replace("_", "-")}</span>

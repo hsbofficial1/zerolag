@@ -1,4 +1,4 @@
-# 🛡️ Kavach: Real-Time UPI Scam Shield on IBM LinuxONE
+# Kavach: Real-Time UPI Scam Shield on IBM LinuxONE
 
 > **IBM Z Datathon 2026 · Theme 1: Real-Time AI for Critical Decisions**
 > (with privacy-by-design from Theme 2: *AI Secured*)
@@ -7,9 +7,9 @@ Kavach scores **every UPI payment while it is happening**: in about 13 ms, befor
 
 | Decision | What happens | When |
 |---|---|---|
-| ✅ **ALLOW** | Payment goes through untouched | ~99.7% of genuine payments |
-| ⚠️ **STEP-UP** | The customer sees a plain-language warning (English + Hindi) and must re-confirm | Medium risk, or a never-seen-before pattern |
-| ⛔ **HOLD** | The payment is paused, the customer is told why and pointed to helpline **1930** | High risk |
+| **ALLOW** | Payment goes through untouched | ~99.7% of genuine payments |
+| **STEP-UP** | The customer sees a plain-language warning (English + Hindi) and must re-confirm | Medium risk, or a never-seen-before pattern |
+| **HOLD** | The payment is paused, the customer is told why and pointed to helpline **1930** | High risk |
 
 Every alert carries **human-readable reasons**, for example *"Customer is on a live phone call while paying"*, *"Receiver got money from 7 different people today (mule pattern)"*. The bank, the customer and a regulator can all see *why* a payment was stopped.
 
