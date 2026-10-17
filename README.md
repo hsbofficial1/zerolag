@@ -3,11 +3,11 @@
 > **IBM Z Datathon 2026 · Theme 1: Real-Time AI for Critical Decisions**
 > (with privacy-by-design from Theme 2: *AI Secured*)
 
-ZeroLag scores **every UPI payment while it is happening**: in about 13 ms, before the money leaves the account. It then decides one of three actions:
+ZeroLag scores **every UPI payment while it is happening**: in about **4 ms on IBM LinuxONE**, before the money leaves the account. It then decides one of three actions:
 
 | Decision | What happens | When |
 |---|---|---|
-| **ALLOW** | Payment goes through untouched | ~99.7% of genuine payments |
+| **ALLOW** | Payment goes through untouched | ~99.6% of genuine payments |
 | **STEP-UP** | The customer sees a plain-language warning (English + Hindi) and must re-confirm | Medium risk, or a never-seen-before pattern |
 | **HOLD** | The payment is paused, the customer is told why and pointed to helpline **1930** | High risk |
 
@@ -24,29 +24,41 @@ India processes **well over 10 billion UPI payments a month**, and fraud has fol
 
 Once a UPI payment settles, recovery is slow and often impossible. **The only good time to stop it is during the transaction.** That needs AI sitting right where the transaction is processed, which for most Indian banks is on IBM Z.
 
-## Results (held-out final week, never seen in training)
+## Results on IBM LinuxONE (held-out final week, never seen in training)
+
+Trained and evaluated **on the IBM LinuxONE instance** (s390x, RHEL 9.8, IBM machine type 9175 / z17 generation, 3 vCPUs at 5.5 GHz under z/VM 7.3). Proof: [`docs/linuxone_proof.txt`](docs/linuxone_proof.txt).
 
 | Metric | Value |
 |---|---|
-| Scams caught (STEP-UP or HOLD) | **95.4%** |
-| Fraud money intercepted | **98.1%** (₹91.1 L of ₹92.9 L) |
-| HOLD precision (a held payment really is fraud) | **95.2%** |
-| Genuine payments that see *any* friction | **0.34%** |
-| Genuine payments wrongly held | **0.06%** |
+| Scams caught (STEP-UP or HOLD) | **95.9%** |
+| Fraud money intercepted | **98.3%** (₹91.3 L of ₹92.9 L) |
+| HOLD precision (a held payment really is fraud) | **96.2%** |
+| Genuine payments that see *any* friction | **0.37%** |
+| Genuine payments wrongly held | **0.05%** |
 | PR-AUC / ROC-AUC | 0.972 / 0.999 |
-| End-to-end decision latency (privacy + features + model + explanation) | **p50 13 ms, p99 27 ms** on a laptop CPU |
+| End-to-end decision latency (privacy + features + model + explanation) | **p50 4.2 ms, p99 5.5 ms** |
+
+**LinuxONE vs laptop.** The same code on the same data:
+
+| | Laptop (x86, Windows) | **IBM LinuxONE (s390x)** |
+|---|---|---|
+| Decision latency p50 / p99 | 13 / 27 ms | **4.2 / 5.5 ms** |
+| Feature replay, 139,755 payments | 11.8 s | **4.0 s** |
+| Full training + evaluation run | 57 s | **17 s** |
+
+The p99 tail is ~5× tighter on LinuxONE. That predictability matters more than the average for a payment authorisation path with a fixed timeout. The CPU flags on the instance include `nnpa`, so the **Telum II Integrated Accelerator for AI is available to this guest** and is the next step for the model (see *Why IBM Z*).
 
 **Fairness audit:** age is *never* a model input. We use it only to check outcomes:
 
 | Age group | Genuine payments flagged | Scams caught |
 |---|---|---|
-| 18–35 | 0.28% | 92.7% |
-| 36–55 | 0.38% | 96.7% |
-| 56+ | 0.34% | 95.7% |
+| 18–35 | 0.31% | 92.7% |
+| 36–55 | 0.42% | 96.7% |
+| 56+ | 0.36% | 97.4% |
 
 Older customers are protected as well as everyone else and are not over-blocked.
 
-Full numbers: [`artifacts/metrics.json`](artifacts/metrics.json). Regenerate them with `python -m zerolag.train`.
+Full numbers: [`artifacts/metrics_linuxone.json`](artifacts/metrics_linuxone.json) (LinuxONE) and [`artifacts/metrics.json`](artifacts/metrics.json) (laptop). Regenerate them with `python -m zerolag.train`.
 
 ## How it works
 
@@ -74,7 +86,7 @@ flowchart LR
 
 | Need | IBM Z capability | In this prototype |
 |---|---|---|
-| Score *inside* the payment, at UPI scale, without shipping data off-platform | **Telum / Telum II on-chip Integrated Accelerator for AI**; IBM Z Deep Learning Compiler, Snap ML; **Machine Learning for z/OS** for in-transaction scoring next to CICS/IMS | Runs on LinuxONE; single-row scoring path built for in-transaction latency. Next step: Snap ML / ONNX → zDLC on the accelerator |
+| Score *inside* the payment, at UPI scale, without shipping data off-platform | **Telum / Telum II on-chip Integrated Accelerator for AI**; IBM Z Deep Learning Compiler, Snap ML; **Machine Learning for z/OS** for in-transaction scoring next to CICS/IMS | **Runs on LinuxONE today at 4.2 ms p50 / 5.5 ms p99.** The instance exposes the `nnpa` facility (Telum II AI accelerator). Next step: Snap ML / ONNX → zDLC so inference runs on it |
 | Customer identity never exposed | **Crypto Express HSM** (CCA / EP11) for tokenization keys, **pervasive encryption** for data at rest and in flight | HMAC tokenization at ingestion; key comes from env today, HSM-held in production |
 | Protect the model and data even from admins | **IBM Secure Execution for Linux** / Hyper Protect confidential containers | Stateless container, ready for a Secure Execution guest |
 | Future-proof the crypto | **Quantum-safe** algorithms (ML-KEM / ML-DSA) in Crypto Express and Z firmware | Token keys and service TLS can move to quantum-safe crypto with no model changes |

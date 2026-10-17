@@ -77,10 +77,10 @@ img.fig { display: block; width: 100%; }
     <div class="meta">Bengaluru hub · 17–18 October 2026<br>github.com/hsbofficial1/zerolag</div>
   </div>
   <div class="r">
-    <div class="k">Scams intercepted</div><div class="v">95.4%<small>of fraudulent payments, held-out week</small></div>
-    <div class="k">Fraud value stopped</div><div class="v">98.1%<small>₹91.1 lakh of ₹92.9 lakh</small></div>
-    <div class="k">Genuine payments affected</div><div class="v">0.34%<small>0.06% held</small></div>
-    <div class="k">Decision time</div><div class="v">13 ms<small>median, end to end</small></div>
+    <div class="k">Scams intercepted</div><div class="v">95.9%<small>of fraudulent payments, held-out week</small></div>
+    <div class="k">Fraud value stopped</div><div class="v">98.3%<small>₹91.3 lakh of ₹92.9 lakh</small></div>
+    <div class="k">Genuine payments affected</div><div class="v">0.37%<small>0.05% held</small></div>
+    <div class="k">Decision time</div><div class="v">4.2 ms<small>median, measured on IBM LinuxONE</small></div>
   </div>
 </section>
 
@@ -121,9 +121,9 @@ img.fig { display: block; width: 100%; }
     <div>
       <table>
         <tr><th style="width:22%">Decision</th><th>Action</th><th class="num" style="width:22%">Share of genuine payments</th></tr>
-        <tr><td><span class="tag">ALLOW</span></td><td>Payment proceeds with no change to the customer experience.</td><td class="num">99.66%</td></tr>
-        <tr><td><span class="tag">STEP-UP</span></td><td>Scam-specific warning and explicit re-confirmation. Also triggered by behaviour never seen in genuine traffic.</td><td class="num">0.28%</td></tr>
-        <tr><td><span class="tag">HOLD</span></td><td>Payment paused and customer informed. Released after verification by the customer or bank.</td><td class="num">0.06%</td></tr>
+        <tr><td><span class="tag">ALLOW</span></td><td>Payment proceeds with no change to the customer experience.</td><td class="num">99.63%</td></tr>
+        <tr><td><span class="tag">STEP-UP</span></td><td>Scam-specific warning and explicit re-confirmation. Also triggered by behaviour never seen in genuine traffic.</td><td class="num">0.32%</td></tr>
+        <tr><td><span class="tag">HOLD</span></td><td>Payment paused and customer informed. Released after verification by the customer or bank.</td><td class="num">0.05%</td></tr>
       </table>
       <p style="margin-top:0.25in;font-size:11.5pt">Example reasons attached to alerts: <i>first payment to this receiver</i>; <i>customer on a live call while paying</i>; <i>receiver paid by 7 different people today</i>; <i>device not previously seen on this account</i>.</p>
     </div>
@@ -164,36 +164,70 @@ img.fig { display: block; width: 100%; }
 <!-- 7 · Results -->
 <section class="slide">
   <div class="section">Results · held-out final week, 32,854 payments, 437 frauds</div>
-  <h1>ZeroLag intercepts 95% of scams and 98% of fraud value while affecting fewer than 4 in 1,000 genuine payments.</h1>
+  <h1>ZeroLag intercepts 96% of scams and 98% of fraud value while affecting fewer than 4 in 1,000 genuine payments.</h1>
   <div class="cols c4" style="gap:0.35in">
-    <div class="kpi"><div class="v acc">95.4%</div><div class="l">Frauds warned or held (recall)</div></div>
-    <div class="kpi"><div class="v acc">98.1%</div><div class="l">Fraud value intercepted</div></div>
-    <div class="kpi"><div class="v">95.2%</div><div class="l">Precision of HOLD decisions</div></div>
-    <div class="kpi"><div class="v">13 / 27 ms</div><div class="l">p50 / p99 decision latency, including explanation</div></div>
+    <div class="kpi"><div class="v acc">95.9%</div><div class="l">Frauds warned or held (recall)</div></div>
+    <div class="kpi"><div class="v acc">98.3%</div><div class="l">Fraud value intercepted</div></div>
+    <div class="kpi"><div class="v">96.2%</div><div class="l">Precision of HOLD decisions</div></div>
+    <div class="kpi"><div class="v">4.2 / 5.5 ms</div><div class="l">p50 / p99 decision latency on IBM LinuxONE, including explanation</div></div>
   </div>
   <div class="cols c2" style="margin-top:0.4in">
     <div>
       <div style="font-size:9.5pt;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:0.06in">Detection rate by fraud type</div>
       <div class="bar"><span>Money-mule transfers</span><span class="track"><i style="width:98.0%"></i></span><span class="n">98.0%</span></div>
       <div class="bar"><span>Account takeover</span><span class="track"><i style="width:97.7%"></i></span><span class="n">97.7%</span></div>
-      <div class="bar"><span>Digital arrest</span><span class="track"><i style="width:92.9%"></i></span><span class="n">92.9%</span></div>
+      <div class="bar"><span>Digital arrest</span><span class="track"><i style="width:94.0%"></i></span><span class="n">94.0%</span></div>
       <div class="bar"><span>Collect-request fraud</span><span class="track"><i style="width:92.9%"></i></span><span class="n">92.9%</span></div>
     </div>
     <div>
       <table>
         <tr><th>Operating metric</th><th class="num">Value</th></tr>
-        <tr><td>Genuine payments with any friction</td><td class="num">0.34%</td></tr>
-        <tr><td>Genuine payments held</td><td class="num">0.06%</td></tr>
+        <tr><td>Genuine payments with any friction</td><td class="num">0.37%</td></tr>
+        <tr><td>Genuine payments held</td><td class="num">0.05%</td></tr>
         <tr><td>PR-AUC</td><td class="num">0.972</td></tr>
         <tr><td>ROC-AUC</td><td class="num">0.999</td></tr>
       </table>
     </div>
   </div>
-  <div class="source">Results are on simulated data. Production use requires validation on bank data, drift monitoring and periodic re-calibration. Latency measured on a laptop CPU, single thread.</div>
+  <div class="source">Results are on simulated data. Production use requires validation on bank data, drift monitoring and periodic re-calibration. All figures from a training and evaluation run on IBM LinuxONE (s390x, machine type 9175); latency single-threaded.</div>
   <div class="foot"><span>ZeroLag</span><span>7</span></div>
 </section>
 
-<!-- 8 · Responsible AI -->
+<!-- 8 · LinuxONE -->
+<section class="slide">
+  <div class="section">Measured on IBM LinuxONE</div>
+  <h1>On LinuxONE, ZeroLag decides in 4.2 ms, three times faster than on commodity hardware and with a five times tighter tail.</h1>
+  <div class="cols c-6040">
+    <div>
+      <table>
+        <tr><th>Same code, same data</th><th class="num">Laptop (x86)</th><th class="num">IBM LinuxONE</th></tr>
+        <tr><td>Decision latency, median</td><td class="num">13 ms</td><td class="num"><b>4.2 ms</b></td></tr>
+        <tr><td>Decision latency, 99th percentile</td><td class="num">27 ms</td><td class="num"><b>5.5 ms</b></td></tr>
+        <tr><td>Feature replay, 139,755 payments</td><td class="num">11.8 s</td><td class="num"><b>4.0 s</b></td></tr>
+        <tr><td>Full training and evaluation run</td><td class="num">57 s</td><td class="num"><b>17 s</b></td></tr>
+        <tr><td>Live dashboard, average per decision</td><td class="num">11–15 ms</td><td class="num"><b>5–6 ms</b></td></tr>
+      </table>
+      <p style="margin-top:0.25in;font-size:11.5pt">A payment authorisation call has a fixed time budget, so the predictable tail matters more than the average. The guest also exposes the <b>NNPA</b> facility. The Telum II on-chip AI accelerator is available for the next step: serving the model on it.</p>
+    </div>
+    <div>
+      <div style="font-size:9.5pt;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:0.08in">System evidence (lscpu, uname)</div>
+      <pre style="margin:0;background:var(--fill);padding:0.18in 0.2in;font-family:'IBM Plex Mono',monospace;font-size:10pt;line-height:1.55;color:var(--ink);white-space:pre-wrap">Architecture:   s390x
+OS:             RHEL 9.8 (kernel el9_8.s390x)
+Vendor ID:      IBM/S390
+Machine type:   9175
+CPU MHz:        5508
+CPU(s):         3
+Hypervisor:     z/VM 7.3.0
+Flags:          ... vxe2 vxp2 <b style="color:var(--accent)">nnpa</b> sie
+Python:         3.12.15
+scikit-learn:   1.9.1, built on-host for z15</pre>
+    </div>
+  </div>
+  <div class="source">Full output: docs/linuxone_proof.txt and artifacts/metrics_linuxone.json in the repository. Laptop: Windows 11, x86-64, same single-thread setting.</div>
+  <div class="foot"><span>ZeroLag</span><span>8</span></div>
+</section>
+
+<!-- 9 · Responsible AI -->
 <section class="slide">
   <div class="section">Responsible AI and privacy</div>
   <h1>Protection is consistent across age groups, and no step of the pipeline handles a raw customer identifier.</h1>
@@ -211,41 +245,41 @@ img.fig { display: block; width: 100%; }
       <div style="font-size:9.5pt;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:0.06in">Outcome audit by payer age group</div>
       <table>
         <tr><th>Age group</th><th class="num">Genuine payments flagged</th><th class="num">Frauds detected</th></tr>
-        <tr><td>18–35</td><td class="num">0.28%</td><td class="num">92.7%</td></tr>
-        <tr><td>36–55</td><td class="num">0.38%</td><td class="num">96.7%</td></tr>
-        <tr><td>56 and over</td><td class="num">0.34%</td><td class="num">95.7%</td></tr>
+        <tr><td>18–35</td><td class="num">0.31%</td><td class="num">92.7%</td></tr>
+        <tr><td>36–55</td><td class="num">0.42%</td><td class="num">96.7%</td></tr>
+        <tr><td>56 and over</td><td class="num">0.36%</td><td class="num">97.4%</td></tr>
       </table>
       <p style="margin-top:0.2in;font-size:11.5pt">Older customers, who are disproportionately targeted by digital-arrest fraud, receive the same level of protection without a higher false-alarm rate.</p>
     </div>
   </div>
-  <div class="foot"><span>ZeroLag</span><span>8</span></div>
+  <div class="foot"><span>ZeroLag</span><span>9</span></div>
 </section>
 
-<!-- 9 · Prototype -->
+<!-- 10 · Prototype -->
 <section class="slide">
   <div class="section">Prototype</div>
   <h1>The working prototype scores a live transaction stream and exposes a REST scoring API with an analyst console.</h1>
   <img class="fig shot" src="dashboard.png" style="height:4.55in;object-fit:cover;object-position:top left">
   <div class="source">Analyst console: live KPIs, held payments with reason codes and customer messages, interactive scenario testing through POST /api/score, and a masked transaction stream.</div>
-  <div class="foot"><span>ZeroLag</span><span>9</span></div>
+  <div class="foot"><span>ZeroLag</span><span>10</span></div>
 </section>
 
-<!-- 10 · IBM Z -->
+<!-- 11 · IBM Z -->
 <section class="slide">
   <div class="section">Why IBM Z and LinuxONE</div>
   <h1>Payment systems already run on IBM Z. Scoring there removes a network hop, a second copy of sensitive data and an external point of failure.</h1>
   <table>
     <tr><th style="width:24%">Requirement</th><th style="width:38%">IBM Z capability</th><th>ZeroLag today → production path</th></tr>
-    <tr><td><b>In-transaction inference at scale</b></td><td>Telum on-chip AI accelerator; IBM Snap ML and Z Deep Learning Compiler; Machine Learning for z/OS for CICS/IMS scoring</td><td>Runs natively on LinuxONE (s390x) with a single-row scoring path → tree model served on the on-chip accelerator</td></tr>
+    <tr><td><b>In-transaction inference at scale</b></td><td>Telum on-chip AI accelerator; IBM Snap ML and Z Deep Learning Compiler; Machine Learning for z/OS for CICS/IMS scoring</td><td>Runs on LinuxONE today at 4.2 ms p50; the guest exposes the NNPA facility → tree model served on the Telum II accelerator</td></tr>
     <tr><td><b>Key protection</b></td><td>Crypto Express HSM (CCA / EP11); pervasive encryption</td><td>HMAC tokenisation key from configuration → key held and used inside the HSM</td></tr>
     <tr><td><b>Confidential processing</b></td><td>IBM Secure Execution for Linux; Hyper Protect Virtual Servers</td><td>Stateless container → deployed as a Secure Execution guest</td></tr>
     <tr><td><b>Long-term cryptographic safety</b></td><td>Quantum-safe algorithms (ML-KEM, ML-DSA) on IBM Z</td><td>Standard TLS → quantum-safe TLS and key wrapping, no model change</td></tr>
     <tr><td><b>Availability</b></td><td>IBM Z reliability and vertical scale</td><td>Stateless scoring replicated across cores and LPARs</td></tr>
   </table>
-  <div class="foot"><span>ZeroLag</span><span>10</span></div>
+  <div class="foot"><span>ZeroLag</span><span>11</span></div>
 </section>
 
-<!-- 11 · Roadmap -->
+<!-- 12 · Roadmap -->
 <section class="slide">
   <div class="section">Impact and roadmap</div>
   <h1>ZeroLag protects the customers most exposed to payment fraud and gives banks an auditable, low-friction control.</h1>
@@ -270,7 +304,7 @@ img.fig { display: block; width: 100%; }
         <li>Continuous drift and fairness monitoring</li>
       </ul></div>
   </div>
-  <div class="foot"><span>ZeroLag · github.com/hsbofficial1/zerolag</span><span>11</span></div>
+  <div class="foot"><span>ZeroLag · github.com/hsbofficial1/zerolag</span><span>12</span></div>
 </section>
 
 </body>

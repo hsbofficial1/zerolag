@@ -68,7 +68,7 @@
   <text class="b" x="736" y="332">ALLOW · STEP-UP · HOLD</text>
   <text class="b" x="736" y="350">tuned for ≥90% hold precision</text>
 
-  <text class="b" x="250" y="410">Median end-to-end decision time 13 ms (p99 27 ms) · stateless, horizontally scalable</text>
+  <text class="b" x="250" y="410">Measured on IBM LinuxONE: 4.2 ms median, 5.5 ms p99 per decision · stateless, horizontally scalable</text>
 
   <!-- consumers -->
   <rect class="ext" x="990" y="150" width="190" height="96"/>

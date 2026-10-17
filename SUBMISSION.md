@@ -2,6 +2,10 @@
 
 Each answer is under the 1024-character limit.
 
+## Description of your project (75–500 characters)
+
+ZeroLag is a real-time AI scam shield for UPI payments that runs inside the transaction on IBM LinuxONE. It tokenises customer identities, computes 14 behavioural signals per payment and scores each one in 4.2 ms on LinuxONE using gradient-boosted and anomaly-detection models. Every payment is allowed, warned or held, with plain-language reasons and an English/Hindi alert. It caught 95.9% of scams and 98.3% of fraud value, affecting only 0.37% of genuine payments.
+
 ## Challenges
 
 **Real-Time AI for Critical Decisions**
@@ -12,15 +16,15 @@ India makes 10+ billion UPI payments a month, and scams have scaled with it. The
 
 ## How are you planning to solve the problem? (Brief Overview)
 
-ZeroLag is a real-time scam shield called inside the payment flow. (1) A privacy layer HMAC-tokenizes UPI and device IDs at ingestion, so nothing downstream sees raw identities. (2) A streaming feature store tracks live behaviour per customer (usual amount, trusted payees/devices/cities, bursts, 24h spend) and per receiver (distinct payers today = mule signal). The same code is used for training and serving, so there is no skew. (3) A gradient-boosted model plus an Isolation-Forest novelty guard scores each payment in ~13 ms. (4) An occlusion explainer turns the top signals into plain reasons. (5) A policy returns ALLOW, STEP-UP (warning + re-confirm) or HOLD, with a scam-specific English/Hindi message and the 1930 helpline. We use time-split evaluation on a 140k-txn simulated UPI stream. Stack: Python, scikit-learn, Flask, live analyst dashboard and REST API, running on LinuxONE.
+ZeroLag is a real-time scam shield called inside the payment flow. (1) A privacy layer HMAC-tokenizes UPI and device IDs at ingestion, so nothing downstream sees raw identities. (2) A streaming feature store tracks live behaviour per customer (usual amount, trusted payees/devices/cities, bursts, 24h spend) and per receiver (distinct payers today = mule signal). The same code is used for training and serving, so there is no skew. (3) A gradient-boosted model plus an Isolation-Forest novelty guard scores each payment in 4.2 ms (p99 5.5 ms) on LinuxONE. (4) An occlusion explainer turns the top signals into plain reasons. (5) A policy returns ALLOW, STEP-UP (warning + re-confirm) or HOLD, with a scam-specific English/Hindi message and the 1930 helpline. We use time-split evaluation on a 140k-txn simulated UPI stream. Stack: Python, scikit-learn, Flask, live analyst dashboard and REST API, running on LinuxONE.
 
 ## How does your solution leverage IBM Z / LinuxONE technologies?
 
-Bank and UPI transaction systems already run on IBM Z, so ZeroLag brings AI to the data instead of shipping payments to an external cloud. The prototype runs natively on LinuxONE (s390x) as a stateless, container-ready service with a single-row, in-transaction scoring path. Production path: the tree model is served via Snap ML / ONNX + IBM Z Deep Learning Compiler on the Telum on-chip AI accelerator, or with Machine Learning for z/OS called from CICS/IMS. The tokenization key moves to the Crypto Express HSM, and pervasive encryption protects data at rest and in flight. The service runs in an IBM Secure Execution / Hyper Protect enclave so even admins can't see customer behaviour, and links use quantum-safe crypto. Z's reliability and scale suit a 24x7 payment rail.
+Bank and UPI transaction systems already run on IBM Z, so ZeroLag brings AI to the data instead of shipping payments to an external cloud. ZeroLag is trained and served on our LinuxONE instance (s390x, z17-generation machine type 9175): 4.2 ms p50 / 5.5 ms p99 per decision, 3x faster with a 5x tighter tail than on a laptop. The instance exposes the nnpa facility (Telum II AI accelerator). Next, the tree model is served on it via Snap ML / ONNX + IBM Z Deep Learning Compiler, or with Machine Learning for z/OS called from CICS/IMS. The tokenization key moves to the Crypto Express HSM, and pervasive encryption protects data at rest and in flight. The service runs in an IBM Secure Execution / Hyper Protect enclave so even admins can't see customer behaviour, and links use quantum-safe crypto. Z's reliability and scale suit a 24x7 payment rail.
 
 ## What value does your solution deliver, and who will benefit from it?
 
-Beneficiaries: UPI users, especially elderly and first-time digital users who are the main targets; banks and PSPs; and law enforcement (1930 / I4C). On a held-out week ZeroLag caught 95.4% of scams and intercepted 98% of fraud value, with only 0.34% of genuine payments seeing any friction and 0.06% held, at 13 ms p50 latency. Every alert has human-readable reasons, so customers understand the warning and analysts and regulators can audit decisions. Age is never a model input, and our fairness audit shows equal protection across age groups. Banks reduce losses, refunds and complaint handling. Customers keep their savings and trust in digital payments, which directly supports financial inclusion: AI for Good.
+Beneficiaries: UPI users, especially elderly and first-time digital users who are the main targets; banks and PSPs; and law enforcement (1930 / I4C). On a held-out week, running on IBM LinuxONE, ZeroLag caught 95.9% of scams and intercepted 98.3% of fraud value, with only 0.37% of genuine payments seeing any friction and 0.05% held, at 4.2 ms p50 latency. Every alert has human-readable reasons, so customers understand the warning and analysts and regulators can audit decisions. Age is never a model input, and our fairness audit shows equal protection across age groups. Banks reduce losses, refunds and complaint handling. Customers keep their savings and trust in digital payments, which directly supports financial inclusion: AI for Good.
 
 ## Link to all open-source resources used
 
@@ -38,17 +42,17 @@ https://github.com/hsbofficial1/zerolag/blob/main/docs/architecture.png , https:
 "Imagine a retired teacher kept on a video call for hours by a fake CBI officer, until she transfers her life savings over UPI. By the time she realises, the money has passed through a chain of mule accounts. Stories like this are in the news every week. Scams like this don't break encryption, they break people. The only moment to stop them is *during* the payment. That's ZeroLag."
 
 **[0:25–0:55] Solution (architecture slide)**
-"ZeroLag sits inside the payment flow on IBM LinuxONE. Every payment is tokenized so no one sees real identities. It's compared against the customer's live behaviour and the receiver's, scored by an AI model in about 13 milliseconds, and then allowed, warned or held, always with a reason."
+"ZeroLag sits inside the payment flow on IBM LinuxONE. Every payment is tokenized so no one sees real identities. It's compared against the customer's live behaviour and the receiver's, scored by an AI model in about 4 milliseconds on the mainframe, and then allowed, warned or held, always with a reason."
 
 **[0:55–2:05] Live demo (screen recording of dashboard)**
 - Show the live stream at 25 txn/s and the KPI tiles ticking. "Thousands of payments, almost all allowed untouched."
 - Point at a HOLD alert from the stream: read the reasons. "New device, other city, 5 payments in an hour: a SIM-swap takeover."
-- Pick the 85-year-old customer and click **Digital arrest call**: "₹95,000 to a 6-day-old account, while she's on a call. HOLD, 99% risk, 8 milliseconds. And she sees this in Hindi and English: no police officer will ever ask you to transfer money on a call, dial 1930."
+- Pick the 85-year-old customer and click **Digital arrest call**: "₹95,000 to a 6-day-old account, while she's on a call. HOLD, 99% risk, in a few milliseconds. And she sees this in Hindi and English: no police officer will ever ask you to transfer money on a call, dial 1930."
 - Click **Normal payment**: "Her usual ₹170 grocery payment? Allowed instantly."
-- Show the terminal on LinuxONE: `uname -m` → s390x, and the running server.
+- Show the terminal on LinuxONE: `uname -m` → s390x and `lscpu` (machine type 9175, `nnpa` flag), and the running server. Point out the KPI tile: ~5 ms average decision time, live on the mainframe.
 
 **[2:05–2:40] Results + responsible AI (model card slide)**
-"On a week of traffic it never saw, ZeroLag caught 95% of scams and 98% of the money, while only 3 in 1,000 genuine payments saw a warning. Age is never used by the model, and our fairness audit shows older users are protected equally, not over-blocked."
+"On a week of traffic it never saw, ZeroLag caught 96% of scams and 98% of the money, while fewer than 4 in 1,000 genuine payments saw a warning. On LinuxONE every decision took about 4 milliseconds, three times faster than on a laptop. Age is never used by the model, and our fairness audit shows older users are protected equally, not over-blocked."
 
 **[2:40–3:00] Why IBM Z + close**
 "Banks' transactions already live on IBM Z. With Telum's on-chip AI, Crypto Express keys and Secure Execution, ZeroLag scores every payment where it happens, without the data ever leaving. ZeroLag: stop the scam before the money moves."
