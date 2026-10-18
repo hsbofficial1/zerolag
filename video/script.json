@@ -1,0 +1,50 @@
+{
+  "voices": {
+    "F": "en-IN-NeerjaExpressiveNeural",
+    "M": "en-IN-PrabhatNeural",
+    "H": "hi-IN-SwaraNeural"
+  },
+  "scenes": [
+    {"id": "open", "lines": [
+      {"v": "F", "t": "Every month, India makes more than twenty-four billion UPI payments."},
+      {"v": "M", "t": "In 2024 alone, Indians lost over twenty-two thousand crore rupees to cyber fraud."},
+      {"v": "F", "t": "Most scams don't hack the system. They hack the person."}
+    ]},
+    {"id": "problem", "lines": [
+      {"v": "M", "t": "Fake police keep victims on a call until they transfer their savings. Fake prizes trick people into approving collect requests. SIM swaps hijack accounts, and mule accounts move the money within minutes."},
+      {"v": "F", "t": "Once a payment settles, it's almost impossible to get back. The only moment to stop a scam is during the payment."}
+    ]},
+    {"id": "meet", "lines": [
+      {"v": "M", "t": "So we built ZeroLag. Real-time AI that checks every UPI payment inside the transaction, on IBM LinuxONE."},
+      {"v": "F", "t": "Each payment is allowed, warned, or held, in milliseconds."}
+    ]},
+    {"id": "how", "lines": [
+      {"v": "M", "t": "Account and device IDs are tokenised first, so the model never sees who you are. Fourteen behaviour signals compare the payment with normal patterns."},
+      {"v": "M", "t": "A gradient-boosted model scores the risk, a novelty detector catches the unknown, and every decision comes with its reasons."}
+    ]},
+    {"id": "proof", "lines": [
+      {"v": "F", "t": "And it runs on our IBM LinuxONE instance. s390x, machine type 9175, with the NNPA flag for the Telum two AI accelerator."}
+    ]},
+    {"id": "console", "lines": [
+      {"v": "M", "t": "This is the ZeroLag console, live on the mainframe, deciding each payment in about four milliseconds."},
+      {"v": "F", "t": "Open a held payment, and you see the risk score, the exact reasons, and the customer's message, in English and Hindi."},
+      {"v": "H", "t": "पुलिस या बैंक कभी कॉल पर पैसे नहीं मांगते। कॉल काटें और 1930 पर संपर्क करें।"}
+    ]},
+    {"id": "test", "lines": [
+      {"v": "M", "t": "Let's test one. An eighty-five-year-old, on a call, sends ninety-five thousand rupees to a six-day-old account."},
+      {"v": "F", "t": "Held, in under five milliseconds, with the reasons."},
+      {"v": "M", "t": "Her usual grocery payment? Allowed instantly."}
+    ]},
+    {"id": "results", "lines": [
+      {"v": "F", "t": "On a week of payments it had never seen, ZeroLag caught ninety-six percent of scams and ninety-eight percent of the money, touching fewer than four in a thousand genuine payments."},
+      {"v": "M", "t": "On LinuxONE it's three times faster than on our laptop. And age is never used, so older customers get equal protection."}
+    ]},
+    {"id": "why", "lines": [
+      {"v": "F", "t": "Payments already live on IBM Z, so ZeroLag brings the AI to the data. Next: the Telum accelerator, Crypto Express keys, and Secure Execution."}
+    ]},
+    {"id": "close", "lines": [
+      {"v": "M", "t": "ZeroLag. Stop the scam before the money moves."},
+      {"v": "F", "t": "Thank you."}
+    ]}
+  ]
+}

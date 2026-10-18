@@ -10,3 +10,10 @@ artifacts/model.joblib
 *.pem
 *.key
 .env
+
+# video project: dependencies and regenerable outputs
+video/remotion/node_modules/
+video/remotion/out/
+video/remotion/public/clips_v2/
+video/remotion/public/music.wav
+video/remotion/record_v2.mjs
